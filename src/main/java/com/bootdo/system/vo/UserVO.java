@@ -4,7 +4,7 @@ import com.bootdo.system.domain.UserDO;
 
 /**
  * @author gaoyuzhe
- * @date 2017/12/15.
+ * @date 2018-12-25 11:20:30/12/15.
  */
 public class UserVO {
     /**
