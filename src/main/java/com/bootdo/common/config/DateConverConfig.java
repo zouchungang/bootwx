@@ -11,7 +11,7 @@ import java.util.zip.DataFormatException;
 
 /**
  * @author gaoyuzhe
- * @date 2017/12/14.
+ * @date 2018-12-25 11:20:30/12/14.
  */
 @Configuration
 public class DateConverConfig {
