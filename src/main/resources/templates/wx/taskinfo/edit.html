@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${taskinfo.id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">链接地址：</label>
+								<div class="col-sm-8">
+									<input id="url" name="url" th:value="${taskinfo.url}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">公众号名称：</label>
+								<div class="col-sm-8">
+									<input id="wxname" name="wxname" th:value="${taskinfo.wxname}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">公众号id：</label>
+								<div class="col-sm-8">
+									<input id="wxid" name="wxid" th:value="${taskinfo.wxid}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">uin,暂不知道什么用处：</label>
+								<div class="col-sm-8">
+									<input id="uin" name="uin" th:value="${taskinfo.uin}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">key,暂不知道什么用处：</label>
+								<div class="col-sm-8">
+									<input id="key" name="key" th:value="${taskinfo.key}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">任务类型,1.阅读，2.点赞，3.关注：</label>
+								<div class="col-sm-8">
+									<input id="tasktype" name="tasktype" th:value="${taskinfo.tasktype}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">任务单价：</label>
+								<div class="col-sm-8">
+									<input id="price" name="price" th:value="${taskinfo.price}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">操作数量：</label>
+								<div class="col-sm-8">
+									<input id="num" name="num" th:value="${taskinfo.num}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">任务总金额：</label>
+								<div class="col-sm-8">
+									<input id="totalmoney" name="totalmoney" th:value="${taskinfo.totalmoney}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">任务周期 单位(分钟)：</label>
+								<div class="col-sm-8">
+									<input id="taskperiod" name="taskperiod" th:value="${taskinfo.taskperiod}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">状态 1.未开始，3.未完成，5已完成：</label>
+								<div class="col-sm-8">
+									<input id="stauts" name="stauts" th:value="${taskinfo.stauts}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">已完成数量：</label>
+								<div class="col-sm-8">
+									<input id="finishnum" name="finishnum" th:value="${taskinfo.finishnum}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">优先级别：</label>
+								<div class="col-sm-8">
+									<input id="sort" name="sort" th:value="${taskinfo.sort}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">创建时间：</label>
+								<div class="col-sm-8">
+									<input id="createdate" name="createdate" th:value="${taskinfo.createdate}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">修改时间：</label>
+								<div class="col-sm-8">
+									<input id="modifydate" name="modifydate" th:value="${taskinfo.modifydate}" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/wx/taskinfo/edit.js">
+	</script>
+</body>
+</html>
