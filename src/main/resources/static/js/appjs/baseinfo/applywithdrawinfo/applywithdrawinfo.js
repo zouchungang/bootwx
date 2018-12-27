@@ -53,7 +53,7 @@ function load() {
 								},
 																{
 									field : 'uid', 
-									title : '用户id' 
+									title : '用户ID'
 								},
 																{
 									field : 'phone', 
@@ -65,7 +65,7 @@ function load() {
 								},
 																{
 									field : 'paytype', 
-									title : '支付方式 1.支付宝，2.微信' 
+									title : '支付方式'
 								},
 																{
 									field : 'account', 
@@ -73,7 +73,7 @@ function load() {
 								},
 																{
 									field : 'stauts', 
-									title : '状态 1.未支付,2.已支付,3.审核失败' 
+									title : '状态'
 								},
 																{
 									field : 'remark', 
