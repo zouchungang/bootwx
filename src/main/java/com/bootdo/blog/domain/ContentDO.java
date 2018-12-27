@@ -8,9 +8,9 @@ import java.util.Date;
 /**
  * 文章内容
  * 
- * @author chglee
- * @email 1992lcg@163.com
- * @date 2017-09-22 13:16:10
+ * @author zcg
+ *
+ * @date 2018-12-22 13:16:10
  */
 public class ContentDO implements Serializable {
 	private static final long serialVersionUID = 1L;

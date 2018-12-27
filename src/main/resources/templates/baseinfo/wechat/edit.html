@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${wechat.id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">用户id：</label>
+								<div class="col-sm-8">
+									<input id="uid" name="uid" th:value="${wechat.uid}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">微信号：</label>
+								<div class="col-sm-8">
+									<input id="wechat" name="wechat" th:value="${wechat.wechat}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">微信密码：</label>
+								<div class="col-sm-8">
+									<input id="password" name="password" th:value="${wechat.password}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">62数据：</label>
+								<div class="col-sm-8">
+									<input id="data62" name="data62" th:value="${wechat.data62}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">最近一次做任务时间：</label>
+								<div class="col-sm-8">
+									<input id="lastdate" name="lastdate" th:value="${wechat.lastdate}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">累计任务次数：</label>
+								<div class="col-sm-8">
+									<input id="totaltaskquantity" name="totaltaskquantity" th:value="${wechat.totaltaskquantity}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">今日任务次数：</label>
+								<div class="col-sm-8">
+									<input id="todaytaskquantity" name="todaytaskquantity" th:value="${wechat.todaytaskquantity}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">状态 1.启用,2.停用,3.占用：</label>
+								<div class="col-sm-8">
+									<input id="stauts" name="stauts" th:value="${wechat.stauts}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">微信状态备注：</label>
+								<div class="col-sm-8">
+									<input id="remark" name="remark" th:value="${wechat.remark}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">创建时间：</label>
+								<div class="col-sm-8">
+									<input id="createdate" name="createdate" th:value="${wechat.createdate}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">修改时间：</label>
+								<div class="col-sm-8">
+									<input id="modifydate" name="modifydate" th:value="${wechat.modifydate}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">任务id：</label>
+								<div class="col-sm-8">
+									<input id="taskid" name="taskid" th:value="${wechat.taskid}" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/baseinfo/wechat/edit.js">
+	</script>
+</body>
+</html>

@@ -10,9 +10,9 @@ import org.quartz.SchedulerException;
 /**
  * 
  * 
- * @author chglee
- * @email 1992lcg@163.com
- * @date 2017-09-26 20:53:48
+ * @author zcg
+ *
+ * @date 2018-12-26 20:53:48
  */
 public interface JobService {
 	
