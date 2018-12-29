@@ -1,6 +1,7 @@
 package com.bootdo.baseinfo.service;
 
 import com.bootdo.baseinfo.domain.ApplywithdrawinfoDO;
+import com.bootdo.common.utils.R;
 
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ public interface ApplywithdrawinfoService {
 	
 	int count(Map<String, Object> map);
 	
-	int save(ApplywithdrawinfoDO applywithdrawinfo);
+	R save(ApplywithdrawinfoDO applywithdrawinfo);
 	
 	int update(ApplywithdrawinfoDO applywithdrawinfo);
 	

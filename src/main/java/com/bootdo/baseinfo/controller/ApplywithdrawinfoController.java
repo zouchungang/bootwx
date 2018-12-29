@@ -3,6 +3,9 @@ package com.bootdo.baseinfo.controller;
 import java.util.List;
 import java.util.Map;
 
+import com.bootdo.common.utils.StringUtils;
+import com.bootdo.util.MessagesCode;
+import com.bootdo.util.MsgUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -74,10 +77,7 @@ public class ApplywithdrawinfoController {
 	@PostMapping("/save")
 	@RequiresPermissions("baseinfo:applywithdrawinfo:add")
 	public R save( ApplywithdrawinfoDO applywithdrawinfo){
-		if(applywithdrawinfoService.save(applywithdrawinfo)>0){
-			return R.ok();
-		}
-		return R.error();
+		return applywithdrawinfoService.save(applywithdrawinfo);
 	}
 	/**
 	 * 修改
