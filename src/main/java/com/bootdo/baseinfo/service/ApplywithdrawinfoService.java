@@ -23,9 +23,9 @@ public interface ApplywithdrawinfoService {
 	
 	R save(ApplywithdrawinfoDO applywithdrawinfo);
 	
-	int update(ApplywithdrawinfoDO applywithdrawinfo);
+	R update(ApplywithdrawinfoDO applywithdrawinfo);
 	
-	int remove(Integer id);
+	R remove(Integer id);
 	
 	int batchRemove(Integer[] ids);
 }
