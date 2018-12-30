@@ -53,82 +53,89 @@ public class ApplywithdrawinfoServiceImpl implements ApplywithdrawinfoService {
 	public R save(ApplywithdrawinfoDO applywithdrawinfo) {
 		//用户申请提现，  申请提现 = 申请提现 + 操作的申请提现金额，可用金额 = 可用金额 – 操作金额
 		try {
-			Map<String,Object> paramMap = Maps.newHashMap();
-			paramMap.put("uid",applywithdrawinfo.getUid());
 			// 用户账户查询
-			List<AccountDO> accountDOs = accountDao.list(paramMap);
-			AccountDO accountDO = accountDOs.get(0);
+			AccountDO accountDO = accountDao.getByUid(applywithdrawinfo.getUid());
+			if(applywithdrawinfo.getApplymoney().compareTo(BigDecimal.ZERO) !=1){
+				return R.error(1,MsgUtil.getMsg(MessagesCode.ERROR_CODE_1002));
+			}
             if(applywithdrawinfo.getApplymoney().compareTo(accountDO.getUsemoney()) == 1){
 				return R.error(1, MsgUtil.getMsg(MessagesCode.ERROR_CODE_1001));
             }
 			accountDO.setApplywithdrawmoney(accountDO.getApplywithdrawmoney().add(applywithdrawinfo.getApplymoney()));
 			accountDO.setUsemoney(accountDO.getUsemoney().subtract(applywithdrawinfo.getApplymoney()));
-			accountDao.save(accountDO);
+			accountDao.update(accountDO);
 			applywithdrawinfo.setStauts(1);
 			applywithdrawinfoDao.save(applywithdrawinfo);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("com.bootdo.baseinfo.service.impl.ApplywithdrawinfoServiceImpl.save->exception!message:{},cause:{},detail{}", e.getMessage(), e.getCause(), e.toString());
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			return R.error();
 		}
 		return R.ok();
 	}
 	
 	@Override
 	@Transactional
-	public int update(ApplywithdrawinfoDO applywithdrawinfo){
-		int ret = -1;
+	public R update(ApplywithdrawinfoDO applywithdrawinfo){
 		try {
+			// 查询申请
+			ApplywithdrawinfoDO applywithdrawinfodb = applywithdrawinfoDao.get(applywithdrawinfo.getId());
+			// 1.未支付的才可以审批
+			if(applywithdrawinfodb.getStauts() != 1){
+				return R.error(1,MsgUtil.getMsg(MessagesCode.ERROR_CODE_2001));
+			}
 			ApplywithdrawinfoDO paramDO = new ApplywithdrawinfoDO();
 			paramDO.setId(applywithdrawinfo.getId());
             paramDO.setStauts(applywithdrawinfo.getStauts());
             paramDO.setRemark(applywithdrawinfo.getRemark());
-            Map<String,Object> paramMap = Maps.newHashMap();
-            paramMap.put("uid",applywithdrawinfo.getUid());
 			// 用户账户查询
-			List<AccountDO> accountDOs = accountDao.list(paramMap);
-			AccountDO accountDO = accountDOs.get(0);
+			AccountDO accountDO = accountDao.getByUid(applywithdrawinfo.getUid());
+			//查询申请
+			applywithdrawinfodb = applywithdrawinfoDao.get(applywithdrawinfo.getId());
 			// 同意并支付
-			if(applywithdrawinfo.getStauts().toString()=="2"){
-				accountDO.setApplywithdrawmoney(accountDO.getApplywithdrawmoney().subtract(applywithdrawinfo.getApplymoney()));
-				accountDO.setTotalwithdrawmoney(accountDO.getTotalwithdrawmoney().add(applywithdrawinfo.getApplymoney()));
+			if(applywithdrawinfo.getStauts().toString().equals("2")){
+				accountDO.setApplywithdrawmoney(accountDO.getApplywithdrawmoney().subtract(applywithdrawinfodb.getApplymoney()));
+				accountDO.setTotalwithdrawmoney(accountDO.getTotalwithdrawmoney().add(applywithdrawinfodb.getApplymoney()));
 			}else if(applywithdrawinfo.getStauts().toString()=="3"){ // 审核拒绝
-				accountDO.setApplywithdrawmoney(accountDO.getApplywithdrawmoney().subtract(applywithdrawinfo.getApplymoney()));
-				accountDO.setUsemoney(accountDO.getUsemoney().add(applywithdrawinfo.getApplymoney()));
+				accountDO.setApplywithdrawmoney(accountDO.getApplywithdrawmoney().subtract(applywithdrawinfodb.getApplymoney()));
+				accountDO.setUsemoney(accountDO.getUsemoney().add(applywithdrawinfodb.getApplymoney()));
 			}else {
-				return ret;
+				return R.error();
 			}
-			accountDao.save(accountDO);
-			ret = applywithdrawinfoDao.update(paramDO);
+			accountDao.update(accountDO);
+			applywithdrawinfoDao.update(paramDO);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("com.bootdo.baseinfo.service.impl.ApplywithdrawinfoServiceImpl.update->exception!message:{},cause:{},detail{}", e.getMessage(), e.getCause(), e.toString());
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			return R.error();
 		}
-		return ret;
+		return R.ok();
 	}
 	
 	@Override
 	@Transactional
-	public int remove(Integer id){
-		int ret = -1;
+	public R remove(Integer id){
 		try {
 			ApplywithdrawinfoDO applywithdrawinfo = applywithdrawinfoDao.get(id);
-			Map<String,Object> paramMap = Maps.newHashMap();
-			paramMap.put("uid",applywithdrawinfo.getUid());
+			// 1.未支付的才可以删除
+			if(applywithdrawinfo.getStauts() != 1){
+				return R.error(1,MsgUtil.getMsg(MessagesCode.ERROR_CODE_2001));
+			}
 			// 用户账户查询
-			List<AccountDO> accountDOs = accountDao.list(paramMap);
-			AccountDO accountDO = accountDOs.get(0);
+			AccountDO accountDO = accountDao.getByUid(applywithdrawinfo.getUid());
 			accountDO.setApplywithdrawmoney(accountDO.getApplywithdrawmoney().subtract(applywithdrawinfo.getApplymoney()));
 			accountDO.setUsemoney(accountDO.getUsemoney().add(applywithdrawinfo.getApplymoney()));
-			accountDao.save(accountDO);
-			ret = applywithdrawinfoDao.remove(id);
+			accountDao.update(accountDO);
+			applywithdrawinfoDao.remove(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("com.bootdo.baseinfo.service.impl.ApplywithdrawinfoServiceImpl.remove->exception!message:{},cause:{},detail{}", e.getMessage(), e.getCause(), e.toString());
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			return R.error();
 		}
-		return ret;
+		return R.ok();
 	}
 	
 	@Override

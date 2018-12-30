@@ -36,14 +36,32 @@ function validateRule() {
 	var icon = "<i class='fa fa-times-circle'></i> ";
 	$("#signupForm").validate({
 		rules : {
-			name : {
+            phone : {
 				required : true
-			}
+			},
+            applymoney : {
+                required : true
+            },
+            paytype : {
+                required : true
+            },
+            account : {
+                required : true
+            }
 		},
 		messages : {
-			name : {
-				required : icon + "请输入姓名"
-			}
+            phone : {
+                required : icon + "请输入手机号码"
+            },
+            applymoney : {
+				required : icon + "请输入申请提现金额"
+			},
+            paytype : {
+                required : icon + "请选择支付方式"
+            },
+            account : {
+                required : icon + "请输入收款账号"
+            }
 		}
 	})
 }

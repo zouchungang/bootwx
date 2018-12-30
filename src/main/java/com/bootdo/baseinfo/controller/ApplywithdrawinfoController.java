@@ -86,8 +86,7 @@ public class ApplywithdrawinfoController {
 	@RequestMapping("/update")
 	@RequiresPermissions("baseinfo:applywithdrawinfo:edit")
 	public R update( ApplywithdrawinfoDO applywithdrawinfo){
-		applywithdrawinfoService.update(applywithdrawinfo);
-		return R.ok();
+		return applywithdrawinfoService.update(applywithdrawinfo);
 	}
 	
 	/**
@@ -97,10 +96,7 @@ public class ApplywithdrawinfoController {
 	@ResponseBody
 	@RequiresPermissions("baseinfo:applywithdrawinfo:remove")
 	public R remove( Integer id){
-		if(applywithdrawinfoService.remove(id)>0){
-		return R.ok();
-		}
-		return R.error();
+		return applywithdrawinfoService.remove(id);
 	}
 	
 	/**
