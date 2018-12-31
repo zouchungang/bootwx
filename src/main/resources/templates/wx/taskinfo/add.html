@@ -3,115 +3,99 @@
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
 <body class="gray-bg">
-	<div class="wrapper wrapper-content ">
-		<div class="row">
-			<div class="col-sm-12">
-				<div class="ibox float-e-margins">
-					<div class="ibox-content">
-						<form class="form-horizontal m-t" id="signupForm">
-							<div class="form-group">	
-								<label class="col-sm-3 control-label">链接地址：</label>
-								<div class="col-sm-8">
-									<input id="url" name="url" class="form-control" type="text">
-								</div>
-							</div>
-														<div class="form-group">	
-								<label class="col-sm-3 control-label">公众号名称：</label>
-								<div class="col-sm-8">
-									<input id="wxname" name="wxname" class="form-control" type="text">
-								</div>
-							</div>
-														<div class="form-group">	
-								<label class="col-sm-3 control-label">公众号id：</label>
-								<div class="col-sm-8">
-									<input id="wxid" name="wxid" class="form-control" type="text">
-								</div>
-							</div>
-														<div class="form-group">	
-								<label class="col-sm-3 control-label">uin,暂不知道什么用处：</label>
-								<div class="col-sm-8">
-									<input id="uin" name="uin" class="form-control" type="text">
-								</div>
-							</div>
-														<div class="form-group">	
-								<label class="col-sm-3 control-label">key,暂不知道什么用处：</label>
-								<div class="col-sm-8">
-									<input id="key" name="key" class="form-control" type="text">
-								</div>
-							</div>
-														<div class="form-group">	
-								<label class="col-sm-3 control-label">任务类型,1.阅读，2.点赞，3.关注：</label>
-								<div class="col-sm-8">
-									<input id="tasktype" name="tasktype" class="form-control" type="text">
-								</div>
-							</div>
-														<div class="form-group">	
-								<label class="col-sm-3 control-label">任务单价：</label>
-								<div class="col-sm-8">
-									<input id="price" name="price" class="form-control" type="text">
-								</div>
-							</div>
-														<div class="form-group">	
-								<label class="col-sm-3 control-label">操作数量：</label>
-								<div class="col-sm-8">
-									<input id="num" name="num" class="form-control" type="text">
-								</div>
-							</div>
-														<div class="form-group">	
-								<label class="col-sm-3 control-label">任务总金额：</label>
-								<div class="col-sm-8">
-									<input id="totalmoney" name="totalmoney" class="form-control" type="text">
-								</div>
-							</div>
-														<div class="form-group">	
-								<label class="col-sm-3 control-label">任务周期 单位(分钟)：</label>
-								<div class="col-sm-8">
-									<input id="taskperiod" name="taskperiod" class="form-control" type="text">
-								</div>
-							</div>
-														<div class="form-group">	
-								<label class="col-sm-3 control-label">状态 1.未开始，3.未完成，5已完成：</label>
-								<div class="col-sm-8">
-									<input id="stauts" name="stauts" class="form-control" type="text">
-								</div>
-							</div>
-														<div class="form-group">	
-								<label class="col-sm-3 control-label">已完成数量：</label>
-								<div class="col-sm-8">
-									<input id="finishnum" name="finishnum" class="form-control" type="text">
-								</div>
-							</div>
-														<div class="form-group">	
-								<label class="col-sm-3 control-label">优先级别：</label>
-								<div class="col-sm-8">
-									<input id="sort" name="sort" class="form-control" type="text">
-								</div>
-							</div>
-														<div class="form-group">	
-								<label class="col-sm-3 control-label">创建时间：</label>
-								<div class="col-sm-8">
-									<input id="createdate" name="createdate" class="form-control" type="text">
-								</div>
-							</div>
-														<div class="form-group">	
-								<label class="col-sm-3 control-label">修改时间：</label>
-								<div class="col-sm-8">
-									<input id="modifydate" name="modifydate" class="form-control" type="text">
-								</div>
-							</div>
-																					<div class="form-group">
-								<div class="col-sm-8 col-sm-offset-3">
-									<button type="submit" class="btn btn-primary">提交</button>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-	</div>
-	</div>
-	<div th:include="include::footer"></div>
-	<script type="text/javascript" src="/js/appjs/wx/taskinfo/add.js">
-	</script>
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">链接地址：</label>
+                            <div class="col-sm-8">
+                                <input id="url" name="url" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">公众号名称：</label>
+                            <div class="col-sm-8">
+                                <input id="wxname" name="wxname" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">公众号id：</label>
+                            <div class="col-sm-8">
+                                <input id="wxid" name="wxid" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">uin：</label>
+                            <div class="col-sm-8">
+                                <input id="uin" name="uin" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">key：</label>
+                            <div class="col-sm-8">
+                                <input id="key" name="key" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">任务类型：</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="tasktype" id="tasktype">
+                                    <option value="1">阅读</option>
+                                    <option value="2">点赞</option>
+                                    <option value="3">关注</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">任务单价：</label>
+                            <div class="col-sm-8">
+                                <input id="price" name="price" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">操作数量：</label>
+                            <div class="col-sm-8">
+                                <input id="num" name="num" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">任务周期 单位(分钟)：</label>
+                            <div class="col-sm-8">
+                                <input id="taskperiod" name="taskperiod" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">已完成数量：</label>
+                            <div class="col-sm-8">
+                                <input id="finishnum" name="finishnum" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">优先级别：</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="sort" id="sort">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-3">
+                                <button type="submit" class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/wx/taskinfo/add.js">
+</script>
 </body>
 </html>
