@@ -65,15 +65,15 @@ function load() {
 								},
 																{
 									field : 'uin', 
-									title : 'uin,暂不知道什么用处' 
+									title : 'uin'
 								},
 																{
 									field : 'key', 
-									title : 'key,暂不知道什么用处' 
+									title : 'key'
 								},
 																{
 									field : 'tasktype', 
-									title : '任务类型,1.阅读，2.点赞，3.关注' 
+									title : '任务类型'
 								},
 																{
 									field : 'price', 
@@ -89,11 +89,11 @@ function load() {
 								},
 																{
 									field : 'taskperiod', 
-									title : '任务周期 单位(分钟)' 
+									title : '任务周期(分钟)'
 								},
 																{
 									field : 'stauts', 
-									title : '状态 1.未开始，3.未完成，5已完成' 
+									title : '状态'
 								},
 																{
 									field : 'finishnum', 
