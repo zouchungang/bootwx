@@ -119,4 +119,23 @@
 		</foreach>
 	</delete>
 
+	<!--可以做任务的号-->
+	<select id="taskwxlist" resultType="com.bootdo.baseinfo.domain.WechatDO">
+		select `id`,`uid`,`Wechat`,`Password`,`Data62`,`LastDate`,`TotalTaskQuantity`,`TodayTaskQuantity`,`Stauts`,`Remark`,`Createdate`,`Modifydate`,`Taskid`
+		from use_wechat where Taskid is null and Stauts=1
+			<if test="lastdate != null and lastdate != ''"> and LastDate <![CDATA[ < ]]>  #{lastdate} </if>
+			<if test="todaytaskquantity != null and todaytaskquantity != ''"> and TodayTaskQuantity <![CDATA[ < ]]> #{todaytaskquantity} </if>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
 </mapper>

@@ -1,5 +1,6 @@
 package com.bootdo.wx.service;
 
+import com.bootdo.common.utils.R;
 import com.bootdo.wx.domain.TaskinfoDO;
 
 import java.util.List;
@@ -20,11 +21,11 @@ public interface TaskinfoService {
 	
 	int count(Map<String, Object> map);
 	
-	int save(TaskinfoDO taskinfo);
+	R save(TaskinfoDO taskinfo);
 	
-	int update(TaskinfoDO taskinfo);
+	R update(TaskinfoDO taskinfo);
 	
-	int remove(Integer id);
+	R remove(Integer id);
 	
 	int batchRemove(Integer[] ids);
 }
