@@ -94,4 +94,7 @@
 		</foreach>
 	</delete>
 
+	<select id="getByUid" resultType="com.bootdo.baseinfo.domain.AccountDO">
+		select `id`,`Uid`,`TotalGainMoney`,`TotalWithdrawMoney`,`ApplyWithdrawMoney`,`UseMoney`,`Createdate`,`Modifydate` from use_account where Uid = #{value}
+	</select>
 </mapper>

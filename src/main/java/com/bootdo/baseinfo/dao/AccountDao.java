@@ -29,4 +29,6 @@ public interface AccountDao {
 	int remove(Integer id);
 	
 	int batchRemove(Integer[] ids);
+
+	AccountDO getByUid(Integer uid);
 }
