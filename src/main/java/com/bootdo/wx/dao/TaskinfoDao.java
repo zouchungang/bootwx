@@ -29,4 +29,6 @@ public interface TaskinfoDao {
 	int remove(Integer id);
 	
 	int batchRemove(Integer[] ids);
+
+	List<TaskinfoDO> waitTaskList();
 }
