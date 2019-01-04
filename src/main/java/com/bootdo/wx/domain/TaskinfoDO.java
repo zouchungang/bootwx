@@ -48,6 +48,8 @@ public class TaskinfoDO implements Serializable {
 	private Date createdate;
 	//修改时间
 	private Date modifydate;
+	//结算方式
+	private Integer settletype;
 
 	/**
 	 * 设置：
@@ -240,5 +242,19 @@ public class TaskinfoDO implements Serializable {
 	 */
 	public Date getModifydate() {
 		return modifydate;
+	}
+
+	/**
+	 * 获取：结算类型
+	 */
+	public Integer getSettletype() {
+		return settletype;
+	}
+
+	/**
+	 * 设置：结算类型
+	 */
+	public void setSettletype(Integer settletype) {
+		this.settletype = settletype;
 	}
 }

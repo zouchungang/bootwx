@@ -1,7 +1,9 @@
 package com.bootdo.baseinfo.service.impl;
 
 import com.bootdo.baseinfo.dao.AccountDao;
+import com.bootdo.baseinfo.dao.AccountdetailDao;
 import com.bootdo.baseinfo.domain.AccountDO;
+import com.bootdo.baseinfo.domain.AccountdetailDO;
 import com.bootdo.common.aspect.LogAspect;
 import com.bootdo.common.exception.BDException;
 import com.bootdo.common.utils.R;
@@ -32,6 +34,8 @@ public class ApplywithdrawinfoServiceImpl implements ApplywithdrawinfoService {
 	private ApplywithdrawinfoDao applywithdrawinfoDao;
 	@Autowired
 	private AccountDao accountDao;
+	@Autowired
+	private AccountdetailDao accountdetailDao;
 	
 	@Override
 	public ApplywithdrawinfoDO get(Integer id){
@@ -51,18 +55,18 @@ public class ApplywithdrawinfoServiceImpl implements ApplywithdrawinfoService {
 	@Override
 	@Transactional
 	public R save(ApplywithdrawinfoDO applywithdrawinfo) {
-		//用户申请提现，  申请提现 = 申请提现 + 操作的申请提现金额，可用金额 = 可用金额 – 操作金额
+		//用户申请提现，  申请提现 = 申请提现 + 操作的申请提现金额
 		try {
 			// 用户账户查询
 			AccountDO accountDO = accountDao.getByUid(applywithdrawinfo.getUid());
 			if(applywithdrawinfo.getApplymoney().compareTo(BigDecimal.ZERO) !=1){
 				return R.error(1,MsgUtil.getMsg(MessagesCode.ERROR_CODE_1002));
 			}
-            if(applywithdrawinfo.getApplymoney().compareTo(accountDO.getUsemoney()) == 1){
+            if(applywithdrawinfo.getApplymoney().compareTo(accountDO.getUsemoney().subtract(accountDO.getApplywithdrawmoney())) == 1){
 				return R.error(1, MsgUtil.getMsg(MessagesCode.ERROR_CODE_1001));
             }
 			accountDO.setApplywithdrawmoney(accountDO.getApplywithdrawmoney().add(applywithdrawinfo.getApplymoney()));
-			accountDO.setUsemoney(accountDO.getUsemoney().subtract(applywithdrawinfo.getApplymoney()));
+		//	accountDO.setUsemoney(accountDO.getUsemoney().subtract(applywithdrawinfo.getApplymoney()));
 			accountDao.update(accountDO);
 			applywithdrawinfo.setStauts(1);
 			applywithdrawinfoDao.save(applywithdrawinfo);
@@ -91,15 +95,26 @@ public class ApplywithdrawinfoServiceImpl implements ApplywithdrawinfoService {
             paramDO.setRemark(applywithdrawinfo.getRemark());
 			// 用户账户查询
 			AccountDO accountDO = accountDao.getByUid(applywithdrawinfo.getUid());
+			BigDecimal changeBefore = accountDO.getUsemoney();
 			//查询申请
 			applywithdrawinfodb = applywithdrawinfoDao.get(applywithdrawinfo.getId());
 			// 同意并支付
 			if(applywithdrawinfo.getStauts().toString().equals("2")){
 				accountDO.setApplywithdrawmoney(accountDO.getApplywithdrawmoney().subtract(applywithdrawinfodb.getApplymoney()));
 				accountDO.setTotalwithdrawmoney(accountDO.getTotalwithdrawmoney().add(applywithdrawinfodb.getApplymoney()));
+				accountDO.setUsemoney(accountDO.getUsemoney().subtract(applywithdrawinfodb.getApplymoney()));
+				//账户资金变动记录
+				AccountdetailDO accountdetailDO = new AccountdetailDO();
+				accountdetailDO.setFrontaccount(changeBefore);
+				accountdetailDO.setDealmoney(applywithdrawinfodb.getApplymoney());
+				accountdetailDO.setBackaccount(changeBefore.subtract(applywithdrawinfodb.getApplymoney()));
+				accountdetailDO.setIsincome(2);//支出
+				accountdetailDO.setOperatetype(3);//提现
+				accountdetailDO.setAid(accountDO.getId());
+				accountdetailDao.save(accountdetailDO);
 			}else if(applywithdrawinfo.getStauts().toString()=="3"){ // 审核拒绝
 				accountDO.setApplywithdrawmoney(accountDO.getApplywithdrawmoney().subtract(applywithdrawinfodb.getApplymoney()));
-				accountDO.setUsemoney(accountDO.getUsemoney().add(applywithdrawinfodb.getApplymoney()));
+				//accountDO.setUsemoney(accountDO.getUsemoney().add(applywithdrawinfodb.getApplymoney()));
 			}else {
 				return R.error();
 			}
@@ -126,7 +141,7 @@ public class ApplywithdrawinfoServiceImpl implements ApplywithdrawinfoService {
 			// 用户账户查询
 			AccountDO accountDO = accountDao.getByUid(applywithdrawinfo.getUid());
 			accountDO.setApplywithdrawmoney(accountDO.getApplywithdrawmoney().subtract(applywithdrawinfo.getApplymoney()));
-			accountDO.setUsemoney(accountDO.getUsemoney().add(applywithdrawinfo.getApplymoney()));
+		//	accountDO.setUsemoney(accountDO.getUsemoney().add(applywithdrawinfo.getApplymoney()));
 			accountDao.update(accountDO);
 			applywithdrawinfoDao.remove(id);
 		} catch (Exception e) {

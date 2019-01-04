@@ -74,10 +74,7 @@ public class TaskinfoController {
 	@PostMapping("/save")
 	@RequiresPermissions("wx:taskinfo:add")
 	public R save( TaskinfoDO taskinfo){
-		if(taskinfoService.save(taskinfo)>0){
-			return R.ok();
-		}
-		return R.error();
+		return taskinfoService.save(taskinfo);
 	}
 	/**
 	 * 修改
@@ -86,8 +83,7 @@ public class TaskinfoController {
 	@RequestMapping("/update")
 	@RequiresPermissions("wx:taskinfo:edit")
 	public R update( TaskinfoDO taskinfo){
-		taskinfoService.update(taskinfo);
-		return R.ok();
+		return taskinfoService.update(taskinfo);
 	}
 	
 	/**
@@ -97,10 +93,7 @@ public class TaskinfoController {
 	@ResponseBody
 	@RequiresPermissions("wx:taskinfo:remove")
 	public R remove( Integer id){
-		if(taskinfoService.remove(id)>0){
-		return R.ok();
-		}
-		return R.error();
+		return taskinfoService.remove(id);
 	}
 	
 	/**
@@ -110,8 +103,8 @@ public class TaskinfoController {
 	@ResponseBody
 	@RequiresPermissions("wx:taskinfo:batchRemove")
 	public R remove(@RequestParam("ids[]") Integer[] ids){
-		taskinfoService.batchRemove(ids);
-		return R.ok();
+		//taskinfoService.batchRemove(ids);
+		return R.error();
 	}
 	
 }

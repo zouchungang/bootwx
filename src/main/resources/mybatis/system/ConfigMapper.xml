@@ -11,9 +11,9 @@
 		select `id`,`key`,`value`,`status`,`remark` from sys_config
         <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
-		  		  <if test="key != null and key != ''"> and key = #{key} </if>
-		  		  <if test="value != null and value != ''"> and value = #{value} </if>
-		  		  <if test="status != null and status != ''"> and status = #{status} </if>
+		  		  <if test="key != null and key != ''"> and `key` = #{key} </if>
+		  		  <if test="value != null and value != ''"> and `value` = #{value} </if>
+		  		  <if test="status != null and status != ''"> and `status` = #{status} </if>
 		  		  <if test="remark != null and remark != ''"> and remark = #{remark} </if>
 		  		</where>
         <choose>

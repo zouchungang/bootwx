@@ -3,8 +3,11 @@ package com.bootdo.wx.service.impl;
 import com.bootdo.baseinfo.dao.WechatDao;
 import com.bootdo.baseinfo.domain.WechatDO;
 import com.bootdo.common.aspect.LogAspect;
+import com.bootdo.common.utils.R;
 import com.bootdo.system.dao.ConfigDao;
 import com.bootdo.system.domain.ConfigDO;
+import com.bootdo.util.MessagesCode;
+import com.bootdo.util.MsgUtil;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,17 +55,17 @@ public class TaskinfoServiceImpl implements TaskinfoService {
 	
 	@Override
 	@Transactional
-	public int save(TaskinfoDO taskinfo){
+	public R save(TaskinfoDO taskinfo){
 		try {
 
 			BigDecimal totalmoney = taskinfo.getPrice().multiply(new BigDecimal(taskinfo.getNum()));
 			taskinfo.setTotalmoney(totalmoney);
-			taskinfo.setStauts(9);
-			taskinfoDao.save(taskinfo);
+			taskinfo.setStauts(1);
 			// 1 是否有未开始的任务在排队
 			Map<String,Object> taskMap = Maps.newHashMap();
 			taskMap.put("stauts","1");
 			List<TaskinfoDO> taskinfoListdb = taskinfoDao.list(taskMap);
+			taskinfoDao.save(taskinfo);
 			if(taskinfoListdb.size() != 0){ // 进入排队状态
 				taskinfo.setStauts(1);
 			}else {// 2 开始任务前，判断是否有足够的微信号, 冷却时间、当日上限数量、状态及绑定任务
@@ -89,32 +92,64 @@ public class TaskinfoServiceImpl implements TaskinfoService {
 						wechatDO.setTaskid(taskinfo.getId());
 						wechatDao.update(wechatDO);
 					}
+					// 绑定完任务，启个线程开始做任务 --------------------功能待开发-------------------------------
+
+
+					//----------------------------------------------------任务结束---------------------------------
 				}
-				// 绑定完任务，开始做任务 --------------------功能待开发-------------------------------
+
 
 			}
-			return taskinfoDao.update(taskinfo);
+			taskinfoDao.update(taskinfo);
+			return R.ok();
 		}catch (Exception e){
 			e.printStackTrace();
 			logger.error("com.bootdo.wx.service.impl.TaskinfoServiceImpl.save->exception!message:{},cause:{},detail{}", e.getMessage(), e.getCause(), e.toString());
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return -1;
+			return R.error();
 		}
 	}
 	
 	@Override
-	public int update(TaskinfoDO taskinfo){
-		return taskinfoDao.update(taskinfo);
+	public R update(TaskinfoDO taskinfo){
+		try {
+			// 查看任务状态
+			TaskinfoDO taskinfodb = taskinfoDao.get(taskinfo.getId());
+			if(taskinfodb.getStauts()!=1){
+				return R.error(1, MsgUtil.getMsg(MessagesCode.ERROR_CODE_2001));
+			}
+			taskinfoDao.update(taskinfo);
+		}catch (Exception e){
+			e.printStackTrace();
+			logger.error("com.bootdo.wx.service.impl.TaskinfoServiceImpl.update->exception!message:{},cause:{},detail{}", e.getMessage(), e.getCause(), e.toString());
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			return R.error();
+		}
+		return R.ok();
 	}
 	
 	@Override
-	public int remove(Integer id){
-		return taskinfoDao.remove(id);
+	public R remove(Integer id){
+		try {
+			// 查看任务状态
+			TaskinfoDO taskinfodb = taskinfoDao.get(id);
+			if(taskinfodb.getStauts()!=1){
+				return R.error(1, MsgUtil.getMsg(MessagesCode.ERROR_CODE_2001));
+			}
+			taskinfoDao.remove(id);
+		}catch (Exception e){
+			e.printStackTrace();
+			logger.error("com.bootdo.wx.service.impl.TaskinfoServiceImpl.remove->exception!message:{},cause:{},detail{}", e.getMessage(), e.getCause(), e.toString());
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			return R.error();
+		}
+		return R.ok();
 	}
 	
 	@Override
 	public int batchRemove(Integer[] ids){
-		return taskinfoDao.batchRemove(ids);
+		//return taskinfoDao.batchRemove(ids);
+		return -1;
 	}
 	
 }
