@@ -92,6 +92,20 @@ public class UserController extends BaseController {
 		return R.error();
 	}
 
+	@Log("用户注册")
+	@PostMapping("/register")
+	@ResponseBody
+	R register(UserDO user) {
+		if (Constant.DEMO_ACCOUNT.equals(getUsername())) {
+			return R.error(1, "演示系统不允许修改,完整体验请部署程序");
+		}
+		user.setPassword(MD5Utils.encrypt(user.getUsername(), user.getPassword()));
+		if (userService.save(user) > 0) {
+			return R.ok();
+		}
+		return R.error();
+	}
+
 	@RequiresPermissions("sys:user:edit")
 	@Log("更新用户")
 	@PostMapping("/update")
@@ -156,6 +170,13 @@ public class UserController extends BaseController {
 	boolean exit(@RequestParam Map<String, Object> params) {
 		// 存在，不通过，false
 		return !userService.exit(params);
+	}
+
+	@PostMapping("/exitInvitecode")
+	@ResponseBody
+	boolean exitInvitecode(@RequestParam Map<String, Object> params) {
+		// 存在，不通过，false
+		return userService.exit(params);
 	}
 
 	@RequiresPermissions("sys:user:resetPwd")

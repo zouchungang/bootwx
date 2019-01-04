@@ -71,6 +71,11 @@ public class LoginController extends BaseController {
         return "login";
     }
 
+    @GetMapping("/register")
+    String register(Model model) {
+        return "register";
+    }
+
     @Log("登录")
     @PostMapping("/login")
     @ResponseBody
