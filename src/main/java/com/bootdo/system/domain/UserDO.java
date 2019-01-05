@@ -73,7 +73,7 @@ public class UserDO implements Serializable {
 	//邀请码
 	private String invitecode;
 	//邀请人id
-	private Integer parentid;
+	private Long parentid;
 	//计费方式 1.按天,2.按任务量
 	private Integer billtype;
 
@@ -355,13 +355,13 @@ public class UserDO implements Serializable {
 	/**
 	 * 设置：邀请人id
 	 */
-	public void setParentid(Integer parentid) {
+	public void setParentid(Long parentid) {
 		this.parentid = parentid;
 	}
 	/**
 	 * 获取：邀请人id
 	 */
-	public Integer getParentid() {
+	public Long getParentid() {
 		return parentid;
 	}
 	/**

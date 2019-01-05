@@ -47,7 +47,7 @@
             <div class="form-group">
                 <input type="text" class="form-control" id="invitecode" name="invitecode" placeholder="请输入邀请码" style="color: #333333;">
             </div>
-            <button type="submit" id="register" class="btn btn-primary block full-width m-b">注 册</button>
+            <button type="button" id="register" class="btn btn-primary block full-width m-b">注 册</button>
 
             <p class="text-muted text-center"><small>已经有账户了？</small><a href="login.html">点此登录</a>
             </p>
@@ -89,7 +89,7 @@
     function register() {
         $.ajax({
             type: "POST",
-            url: ctx+"register",
+            url: ctx+"sys/user/register",
             data: $('#registerForm').serialize(),
             success: function (r) {
                  if (r.code == 0) {

@@ -96,14 +96,8 @@ public class UserController extends BaseController {
 	@PostMapping("/register")
 	@ResponseBody
 	R register(UserDO user) {
-		if (Constant.DEMO_ACCOUNT.equals(getUsername())) {
-			return R.error(1, "演示系统不允许修改,完整体验请部署程序");
-		}
 		user.setPassword(MD5Utils.encrypt(user.getUsername(), user.getPassword()));
-		if (userService.save(user) > 0) {
-			return R.ok();
-		}
-		return R.error();
+		return userService.register(user);
 	}
 
 	@RequiresPermissions("sys:user:edit")

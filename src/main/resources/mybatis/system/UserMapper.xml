@@ -95,7 +95,9 @@
 			`live_address`, 
 			`hobby`, 
 			`province`, 
-			`city`, 
+			`city`,
+			`invitecode`,
+			`parentid`,
 			`district`
 		)
 		values
@@ -116,7 +118,9 @@
 			#{liveAddress}, 
 			#{hobby}, 
 			#{province}, 
-			#{city}, 
+			#{city},
+            #{invitecode},
+            #{parentid},
 			#{district}
 		)
 	</insert>

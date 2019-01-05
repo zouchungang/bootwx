@@ -19,6 +19,8 @@ public interface ConfigDao {
 	ConfigDO get(Long id);
 	
 	List<ConfigDO> list(Map<String,Object> map);
+
+	List<ConfigDO> getConfigsByKey(Map<String,Object> map);
 	
 	int count(Map<String,Object> map);
 	
