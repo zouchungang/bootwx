@@ -92,6 +92,14 @@ public class UserController extends BaseController {
 		return R.error();
 	}
 
+	@Log("用户注册")
+	@PostMapping("/register")
+	@ResponseBody
+	R register(UserDO user) {
+		user.setPassword(MD5Utils.encrypt(user.getUsername(), user.getPassword()));
+		return userService.register(user);
+	}
+
 	@RequiresPermissions("sys:user:edit")
 	@Log("更新用户")
 	@PostMapping("/update")
@@ -156,6 +164,13 @@ public class UserController extends BaseController {
 	boolean exit(@RequestParam Map<String, Object> params) {
 		// 存在，不通过，false
 		return !userService.exit(params);
+	}
+
+	@PostMapping("/exitInvitecode")
+	@ResponseBody
+	boolean exitInvitecode(@RequestParam Map<String, Object> params) {
+		// 存在，不通过，false
+		return userService.exit(params);
 	}
 
 	@RequiresPermissions("sys:user:resetPwd")

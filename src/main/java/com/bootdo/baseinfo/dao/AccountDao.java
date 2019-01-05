@@ -30,5 +30,5 @@ public interface AccountDao {
 	
 	int batchRemove(Integer[] ids);
 
-	AccountDO getByUid(Integer uid);
+	AccountDO getByUid(Long uid);
 }

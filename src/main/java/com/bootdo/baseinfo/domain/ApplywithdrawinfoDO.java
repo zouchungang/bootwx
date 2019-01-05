@@ -19,7 +19,7 @@ public class ApplywithdrawinfoDO implements Serializable {
 	//
 	private Integer id;
 	//用户id
-	private Integer uid;
+	private Long uid;
 	//手机号码
 	private String phone;
 	//申请提现金额
@@ -52,13 +52,13 @@ public class ApplywithdrawinfoDO implements Serializable {
 	/**
 	 * 设置：用户id
 	 */
-	public void setUid(Integer uid) {
+	public void setUid(Long uid) {
 		this.uid = uid;
 	}
 	/**
 	 * 获取：用户id
 	 */
-	public Integer getUid() {
+	public Long getUid() {
 		return uid;
 	}
 	/**

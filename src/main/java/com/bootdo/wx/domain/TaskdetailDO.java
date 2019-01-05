@@ -21,7 +21,7 @@ public class TaskdetailDO implements Serializable {
 	//任务id
 	private Integer taskid;
 	//用户id
-	private Integer uid;
+	private Long uid;
 	//父级用户id(邀请人id)
 	private Integer parentid;
 	//微信id
@@ -66,13 +66,13 @@ public class TaskdetailDO implements Serializable {
 	/**
 	 * 设置：用户id
 	 */
-	public void setUid(Integer uid) {
+	public void setUid(Long uid) {
 		this.uid = uid;
 	}
 	/**
 	 * 获取：用户id
 	 */
-	public Integer getUid() {
+	public Long getUid() {
 		return uid;
 	}
 	/**

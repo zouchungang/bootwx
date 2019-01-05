@@ -39,6 +39,18 @@
 		  		  <if test="remark != null and remark != ''"> and remark = #{remark} </if>
 		  		</where>
 	</select>
+
+	<select id="getConfigsByKey" resultType="com.bootdo.system.domain.ConfigDO">
+		select `id`,`key`,`value`,`status`,`remark` from sys_config t
+		<where>
+			<if test="keys != null and keys.size()>0 ">
+				t.key in
+				<foreach item="key" collection="keys" index="index" open="(" separator="," close=")">
+					#{key}
+				</foreach>
+			</if>
+		</where>
+	</select>
 	 
 	<insert id="save" parameterType="com.bootdo.system.domain.ConfigDO" useGeneratedKeys="true" keyProperty="id">
 		insert into sys_config
