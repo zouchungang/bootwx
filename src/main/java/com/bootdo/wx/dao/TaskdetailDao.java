@@ -29,4 +29,6 @@ public interface TaskdetailDao {
 	int remove(Integer id);
 	
 	int batchRemove(Integer[] ids);
+
+	List<Map<String,Object>> querySettleAccountDetail(Integer id);
 }

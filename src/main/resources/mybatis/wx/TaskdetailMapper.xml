@@ -109,4 +109,12 @@
 		</foreach>
 	</delete>
 
+	<!-- 获取结算明细 -->
+	<select id="querySettleAccountDetail" resultType="Map">
+		SELECT t.Uid,t.parentId,sum(t.Price) Price,t1.id uAccountId,t2.id parentUAccountId
+		FROM use_account t1,wx_taskdetail t LEFT JOIN use_account t2 ON t.parentId = t2.Uid
+		where Stauts=1 AND t.Uid = t1.Uid and  Taskid = #{value}
+		GROUP BY t.Uid,t.parentId,uAccountId,parentUAccountId
+	</select>
+
 </mapper>
