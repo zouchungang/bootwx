@@ -2,15 +2,26 @@ package com.bootdo.system.service.impl;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.math.BigDecimal;
 import java.util.*;
 
+import com.bootdo.baseinfo.dao.AccountDao;
+import com.bootdo.baseinfo.domain.AccountDO;
 import com.bootdo.common.config.BootdoConfig;
 import com.bootdo.common.domain.FileDO;
 import com.bootdo.common.service.FileService;
 import com.bootdo.common.utils.*;
+import com.bootdo.system.dao.ConfigDao;
+import com.bootdo.system.domain.ConfigDO;
+import com.bootdo.system.service.ConfigService;
 import com.bootdo.system.service.DeptService;
 import com.bootdo.system.vo.UserVO;
+import com.bootdo.util.SoloNumberGenerateUtil;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import io.swagger.models.auth.In;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.shiro.authc.Account;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +39,7 @@ import com.bootdo.system.domain.DeptDO;
 import com.bootdo.system.domain.UserDO;
 import com.bootdo.system.domain.UserRoleDO;
 import com.bootdo.system.service.UserService;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -44,9 +56,18 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private FileService sysFileService;
     @Autowired
+    private ConfigDao configDao;
+    @Autowired
     private BootdoConfig bootdoConfig;
     @Autowired
     DeptService deptService;
+    @Autowired
+    AccountDao accountDao;
+    //注册用户默认分配角色
+    private final String REGISTERED_USER_ROLE = "registeruserrole";
+    //注册用户默认分配部门
+    private final String REGISTERED_USER_DEPT = "registeruserdept";
+
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Override
@@ -95,6 +116,82 @@ public class UserServiceImpl implements UserService {
             userRoleMapper.batchSave(list);
         }
         return count;
+    }
+
+    @Transactional
+    @Override
+    public R register(UserDO user) {
+        R ret=new R();
+
+        //拿到系统配置参数
+        Map<String, Object> configMap= Maps.newHashMap();
+        List<String> keyLi=Lists.newArrayList();
+        keyLi.add(REGISTERED_USER_ROLE);
+        keyLi.add(REGISTERED_USER_DEPT);
+        configMap.put("keys", keyLi);
+
+        try {
+            List<ConfigDO> sysConfigList = configDao.getConfigsByKey(configMap);
+
+            String defaultRole = "";
+            String defalutDept = "";
+            for (ConfigDO cd : sysConfigList) {
+                if (cd.getKey().equalsIgnoreCase(REGISTERED_USER_DEPT)) {
+                    defalutDept = cd.getValue();
+                } else if (cd.getKey().equalsIgnoreCase(REGISTERED_USER_ROLE)) {
+                    defaultRole = cd.getValue();
+                }
+            }
+            user.setStatus(1);
+            user.setDeptId(Long.parseLong(defalutDept));
+            user.setGmtCreate(new Date());
+            String parentInviteCode=user.getInvitecode();
+            if (null!=parentInviteCode&&!"".equals(parentInviteCode)) {
+                Map<String,Object> inviteParentUser=Maps.newHashMap();
+                inviteParentUser.put("invitecode", parentInviteCode);
+                List<UserDO> parentUserLi= userMapper.list(inviteParentUser);
+                if (parentUserLi.size() > 0) {
+                    UserDO parentUser = parentUserLi.get(0);
+                    user.setParentid(parentUser.getUserId());
+                }
+            }
+            String inviteCode = SoloNumberGenerateUtil.getRandomChar(6);
+            user.setInvitecode(inviteCode);
+            int count = userMapper.save(user);
+            Long userId = user.getUserId();
+
+            //插入资金
+            AccountDO accountDO=new AccountDO();
+            accountDO.setUid(user.getUserId());
+            accountDO.setUsemoney(BigDecimal.ZERO);
+            accountDO.setApplywithdrawmoney(BigDecimal.ZERO);
+            accountDO.setTotalwithdrawmoney(BigDecimal.ZERO);
+            accountDO.setTotalgainmoney(BigDecimal.ZERO);
+            accountDO.setCreatedate(new Date());
+            accountDao.save(accountDO);
+
+            if (!"".equals(defaultRole)&&!"".equals(defalutDept)) {
+                ConfigDO configDO = sysConfigList.get(0);
+                List<Long> roles = Lists.newArrayList();
+                roles.add(Long.parseLong(defaultRole));
+                userRoleMapper.removeByUserId(userId);
+                List<UserRoleDO> list = new ArrayList<>();
+                for (Long roleId : roles) {
+                    UserRoleDO ur = new UserRoleDO();
+                    ur.setUserId(userId);
+                    ur.setRoleId(roleId);
+                    list.add(ur);
+                }
+                if (list.size() > 0) {
+                    userRoleMapper.batchSave(list);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("com.bootdo.system.service.impl.UserServiceImpl.register_error：cause={},message={},detail={}",e.getCause(),e.getMessage(),e.toString());
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return ret;
     }
 
     @Override

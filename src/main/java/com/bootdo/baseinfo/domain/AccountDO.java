@@ -19,7 +19,7 @@ public class AccountDO implements Serializable {
 	//
 	private Integer id;
 	//用户id
-	private Integer uid;
+	private Long uid;
 	//累计赚取佣金
 	private BigDecimal totalgainmoney;
 	//累计提现金额
@@ -48,13 +48,13 @@ public class AccountDO implements Serializable {
 	/**
 	 * 设置：用户id
 	 */
-	public void setUid(Integer uid) {
+	public void setUid(Long uid) {
 		this.uid = uid;
 	}
 	/**
 	 * 获取：用户id
 	 */
-	public Integer getUid() {
+	public Long getUid() {
 		return uid;
 	}
 	/**

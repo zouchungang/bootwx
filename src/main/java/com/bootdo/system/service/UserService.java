@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.bootdo.common.utils.R;
 import com.bootdo.system.vo.UserVO;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,8 @@ public interface UserService {
 	int count(Map<String, Object> map);
 
 	int save(UserDO user);
+
+	R register(UserDO user);
 
 	int update(UserDO user);
 
