@@ -34,7 +34,13 @@ public class SettleAccountsJob implements Job {
         List<TaskinfoDO> taskinfoDOS = taskinfoDao.waitSettleTaskList();
         if(taskinfoDOS.size()>0){
             for(int i=0;i<taskinfoDOS.size();i++){
-                settleAccountsJobService.run(taskinfoDOS.get(i));
+                TaskinfoDO taskinfoDO = taskinfoDOS.get(i);
+                int num = settleAccountsJobService.run(taskinfoDO);
+
+                if(num<1){// 结算失败，修改任务结算次数
+                    taskinfoDO.setSettlenum(taskinfoDO.getSettlenum()+1);
+                    taskinfoDao.update(taskinfoDO);
+                }
             }
         }else{
             return;

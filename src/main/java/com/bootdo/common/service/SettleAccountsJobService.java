@@ -4,6 +4,6 @@ import com.bootdo.wx.domain.TaskinfoDO;
 
 public interface SettleAccountsJobService {
 
-    void run(TaskinfoDO taskinfoDO);
+    int run(TaskinfoDO taskinfoDO);
 
 }

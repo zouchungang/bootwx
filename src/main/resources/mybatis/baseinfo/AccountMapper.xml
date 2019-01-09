@@ -4,11 +4,11 @@
 <mapper namespace="com.bootdo.baseinfo.dao.AccountDao">
 
 	<select id="get" resultType="com.bootdo.baseinfo.domain.AccountDO">
-		select `id`,`Uid`,`TotalGainMoney`,`TotalWithdrawMoney`,`ApplyWithdrawMoney`,`UseMoney`,`Createdate`,`Modifydate` from use_account where id = #{value}
+		select `id`,`Uid`,`TotalGainMoney`,`TotalWithdrawMoney`,`ApplyWithdrawMoney`,`UseMoney`,`Createdate`,`Modifydate`,`version` from use_account where id = #{value}
 	</select>
 
 	<select id="list" resultType="com.bootdo.baseinfo.domain.AccountDO">
-		select `id`,`Uid`,`TotalGainMoney`,`TotalWithdrawMoney`,`ApplyWithdrawMoney`,`UseMoney`,`Createdate`,`Modifydate` from use_account
+		select `id`,`Uid`,`TotalGainMoney`,`TotalWithdrawMoney`,`ApplyWithdrawMoney`,`UseMoney`,`Createdate`,`Modifydate`,`version` from use_account
         <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
 		  		  <if test="uid != null and uid != ''"> and Uid = #{uid} </if>
@@ -18,6 +18,7 @@
 		  		  <if test="usemoney != null and usemoney != ''"> and UseMoney = #{usemoney} </if>
 		  		  <if test="createdate != null and createdate != ''"> and Createdate = #{createdate} </if>
 		  		  <if test="modifydate != null and modifydate != ''"> and Modifydate = #{modifydate} </if>
+				  <if test="version != null and version !=''"> and version = #{version} </if>
 		  		</where>
         <choose>
             <when test="sort != null and sort.trim() != ''">
@@ -43,6 +44,7 @@
 		  		  <if test="usemoney != null and usemoney != ''"> and UseMoney = #{usemoney} </if>
 		  		  <if test="createdate != null and createdate != ''"> and Createdate = #{createdate} </if>
 		  		  <if test="modifydate != null and modifydate != ''"> and Modifydate = #{modifydate} </if>
+			 	  <if test="version != null and version != ''"> and version = #{version} </if>
 		  		</where>
 	</select>
 	 
@@ -78,9 +80,10 @@
 			<if test="applywithdrawmoney != null">`ApplyWithdrawMoney` = #{applywithdrawmoney}, </if>
 			<if test="usemoney != null">`UseMoney` = #{usemoney}, </if>
 			<if test="createdate != null">`Createdate` = #{createdate}, </if>
-			<if test="modifydate != null">`Modifydate` = #{modifydate}</if>
+			<if test="modifydate != null">`Modifydate` = #{modifydate}, </if>
+			<if test="version != null">`version` = #{version}+1</if>
 		</set>
-		where id = #{id}
+		where id = #{id} and version = #{version}
 	</update>
 	
 	<delete id="remove">
@@ -95,6 +98,11 @@
 	</delete>
 
 	<select id="getByUid" resultType="com.bootdo.baseinfo.domain.AccountDO">
-		select `id`,`Uid`,`TotalGainMoney`,`TotalWithdrawMoney`,`ApplyWithdrawMoney`,`UseMoney`,`Createdate`,`Modifydate` from use_account where Uid = #{value}
+		select `id`,`Uid`,`TotalGainMoney`,`TotalWithdrawMoney`,`ApplyWithdrawMoney`,`UseMoney`,`Createdate`,`Modifydate`,`version` from use_account where Uid = #{value}
 	</select>
+
+	<update id="updateSettleAccount" parameterType="map">
+		update use_account set TotalGainMoney = TotalGainMoney + #{changeValue}, UseMoney = UseMoney + #{changeValue}
+		where id = #{id} and version = #{version}
+	</update>
 </mapper>

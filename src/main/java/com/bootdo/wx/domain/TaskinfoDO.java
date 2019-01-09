@@ -50,7 +50,16 @@ public class TaskinfoDO implements Serializable {
 	private Date modifydate;
 	//结算方式
 	private Integer settletype;
+	// 结算次数
+	private Integer settlenum;
 
+	public Integer getSettlenum() {
+		return settlenum;
+	}
+
+	public void setSettlenum(Integer settlenum) {
+		this.settlenum = settlenum;
+	}
 	/**
 	 * 设置：
 	 */

@@ -31,4 +31,6 @@ public interface AccountDao {
 	int batchRemove(Integer[] ids);
 
 	AccountDO getByUid(Long uid);
+
+	int updateSettleAccount(Map<String,Object> map);
 }

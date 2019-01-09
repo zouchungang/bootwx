@@ -1,5 +1,6 @@
 package com.bootdo.wx.dao;
 
+import com.bootdo.wx.domain.SettleAccountModel;
 import com.bootdo.wx.domain.TaskdetailDO;
 
 import java.util.List;
@@ -30,5 +31,5 @@ public interface TaskdetailDao {
 	
 	int batchRemove(Integer[] ids);
 
-	List<Map<String,Object>> querySettleAccountDetail(Integer id);
+	List<SettleAccountModel> querySettleAccountDetail(Integer id);
 }

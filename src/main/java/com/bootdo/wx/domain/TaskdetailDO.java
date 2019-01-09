@@ -23,7 +23,7 @@ public class TaskdetailDO implements Serializable {
 	//用户id
 	private Long uid;
 	//父级用户id(邀请人id)
-	private Integer parentid;
+	private Long parentid;
 	//微信id
 	private Integer wxid;
 	//任务单价
@@ -78,13 +78,13 @@ public class TaskdetailDO implements Serializable {
 	/**
 	 * 设置：父级用户id(邀请人id)
 	 */
-	public void setParentid(Integer parentid) {
+	public void setParentid(Long parentid) {
 		this.parentid = parentid;
 	}
 	/**
 	 * 获取：父级用户id(邀请人id)
 	 */
-	public Integer getParentid() {
+	public Long getParentid() {
 		return parentid;
 	}
 	/**
