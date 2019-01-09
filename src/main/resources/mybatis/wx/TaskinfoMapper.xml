@@ -4,11 +4,11 @@
 <mapper namespace="com.bootdo.wx.dao.TaskinfoDao">
 
 	<select id="get" resultType="com.bootdo.wx.domain.TaskinfoDO">
-		select `id`,`url`,`WxName`,`WxId`,`uin`,`key`,`TaskType`,`Price`,`Num`,`TotalMoney`,`taskPeriod`,`Stauts`,`FinishNum`,`sort`,`Createdate`,`Modifydate`,`SettleType` from wx_taskinfo where id = #{value}
+		select `id`,`url`,`WxName`,`WxId`,`uin`,`key`,`TaskType`,`Price`,`Num`,`TotalMoney`,`taskPeriod`,`Stauts`,`FinishNum`,`sort`,`Createdate`,`Modifydate`,`SettleType`,`settlenum` from wx_taskinfo where id = #{value}
 	</select>
 
 	<select id="list" resultType="com.bootdo.wx.domain.TaskinfoDO">
-		select `id`,`url`,`WxName`,`WxId`,`uin`,`key`,`TaskType`,`Price`,`Num`,`TotalMoney`,`taskPeriod`,`Stauts`,`FinishNum`,`sort`,`Createdate`,`Modifydate`,`SettleType` from wx_taskinfo
+		select `id`,`url`,`WxName`,`WxId`,`uin`,`key`,`TaskType`,`Price`,`Num`,`TotalMoney`,`taskPeriod`,`Stauts`,`FinishNum`,`sort`,`Createdate`,`Modifydate`,`SettleType`,`settlenum` from wx_taskinfo
         <where>  
 		  		  <if test="id != null and id != ''"> and id = #{id} </if>
 		  		  <if test="url != null and url != ''"> and url = #{url} </if>
@@ -27,6 +27,7 @@
 		  		  <if test="createdate != null and createdate != ''"> and Createdate = #{createdate} </if>
 		  		  <if test="modifydate != null and modifydate != ''"> and Modifydate = #{modifydate} </if>
 			      <if test="settletype != null and settletype != ''"> and settletype = #{settletype} </if>
+				  <if test="settlenum != null and settlenum !=''"> and settlenum =#{settlenum} </if>
 		  		</where>
         <choose>
             <when test="sort != null and sort.trim() != ''">
@@ -61,6 +62,7 @@
 		  		  <if test="createdate != null and createdate != ''"> and Createdate = #{createdate} </if>
 		  		  <if test="modifydate != null and modifydate != ''"> and Modifydate = #{modifydate} </if>
 			      <if test="settletype != null and settletype != ''"> and settletype = #{settletype} </if>
+				  <if test="settlenum != null and settlenum !=''"> and settlenum =#{settlenum} </if>
 		  		</where>
 	</select>
 	 
@@ -81,7 +83,8 @@
 			`FinishNum`, 
 			`sort`,
 			`Modifydate`,
-			`settletype`
+			`settletype`,
+			`settlenum`
 		)
 		values
 		(
@@ -99,7 +102,8 @@
 			#{finishnum}, 
 			#{sort},
 			#{modifydate},
-			#{settletype}
+			#{settletype},
+			#{settlenum}
 		)
 	</insert>
 	 
@@ -119,8 +123,9 @@
 			<if test="stauts != null">`Stauts` = #{stauts}, </if>
 			<if test="finishnum != null">`FinishNum` = #{finishnum}, </if>
 			<if test="sort != null">`sort` = #{sort}, </if>
-			<if test="modifydate != null">`Modifydate` = #{modifydate}</if>
-			<if test="settletype != null ">`settletype` = #{settletype}</if>
+			<if test="modifydate != null">`Modifydate` = #{modifydate}, </if>
+			<if test="settletype != null ">`settletype` = #{settletype}, </if>
+			<if test="settlenum != null ">`settlenum` = #{settlenum} </if>
 		</set>
 		where id = #{id}
 	</update>
@@ -139,14 +144,14 @@
 	<!-- 定時任务获取任务列表 -->
 	<select id="waitTaskList" resultType="com.bootdo.wx.domain.TaskinfoDO">
 		select `id`,`url`,`WxName`,`WxId`,`uin`,`key`,`TaskType`,`Price`,`Num`,`TotalMoney`,`taskPeriod`,`Stauts`,`FinishNum`,`sort`,
-		`Createdate`,`Modifydate`,`settletype` from wx_taskinfo
+		`Createdate`,`Modifydate`,`settletype`,`settlenum` from wx_taskinfo
 		where Stauts = 1 order by sort desc,Createdate asc
 	</select>
 	<!-- 获取待结算任务列表 -->
 	<select id="waitSettleTaskList" resultType="com.bootdo.wx.domain.TaskinfoDO">
 		select `id`,`url`,`WxName`,`WxId`,`uin`,`key`,`TaskType`,`Price`,`Num`,`TotalMoney`,`taskPeriod`,`Stauts`,`FinishNum`,`sort`,
-		`Createdate`,`Modifydate`,`settletype` from wx_taskinfo
-		where Stauts = 5 and settletype = 1 order by sort desc,Createdate asc
+		`Createdate`,`Modifydate`,`settletype`,`settlenum` from wx_taskinfo
+		where Stauts = 5 and settletype = 1 order by settlenum,Createdate asc limit 3
 	</select>
 
 </mapper>

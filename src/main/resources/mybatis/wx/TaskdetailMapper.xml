@@ -3,6 +3,14 @@
 
 <mapper namespace="com.bootdo.wx.dao.TaskdetailDao">
 
+	<resultMap id="querySettleAccountDetail"   type="java.util.HashMap">
+		<result column="Uid" property="uid"/>
+		<result column="parentId" property="parentid" />
+		<result column="Price" property="price" />
+		<result column="uAccountId" property="uaccountid" />
+		<result column="parentUAccountId" property="parentuaccountid" />
+	</resultMap>
+
 	<select id="get" resultType="com.bootdo.wx.domain.TaskdetailDO">
 		select `id`,`Taskid`,`Uid`,`parentId`,`WxId`,`Price`,`TaskType`,`Stauts`,`Remark`,`Createdate`,`Modifydate` from wx_taskdetail where id = #{value}
 	</select>
@@ -108,5 +116,13 @@
 			#{id}
 		</foreach>
 	</delete>
+
+	<!-- 获取结算明细 -->
+	<select id="querySettleAccountDetail" resultMap="querySettleAccountDetail">
+		SELECT t.Uid,t.parentId,sum(t.Price) Price,t1.id uAccountId,t2.id parentUAccountId
+		FROM use_account t1,wx_taskdetail t LEFT JOIN use_account t2 ON t.parentId = t2.Uid
+		where Stauts=1 AND t.Uid = t1.Uid and  Taskid = #{value}
+		GROUP BY t.Uid,t.parentId,uAccountId,parentUAccountId
+	</select>
 
 </mapper>

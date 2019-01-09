@@ -32,6 +32,8 @@ public class AccountDO implements Serializable {
 	private Date createdate;
 	//修改时间
 	private Date modifydate;
+	// 版本号
+	private Integer version;
 
 	/**
 	 * 设置：
@@ -75,6 +77,15 @@ public class AccountDO implements Serializable {
 	public void setTotalwithdrawmoney(BigDecimal totalwithdrawmoney) {
 		this.totalwithdrawmoney = totalwithdrawmoney;
 	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+
 	/**
 	 * 获取：累计提现金额
 	 */

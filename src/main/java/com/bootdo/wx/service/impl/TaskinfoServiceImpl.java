@@ -57,21 +57,28 @@ public class TaskinfoServiceImpl implements TaskinfoService {
 	@Transactional
 	public R save(TaskinfoDO taskinfo){
 		try {
-
+			Map<String,Object> configMap = Maps.newHashMap();
+			List<ConfigDO> configDos = null;
 			BigDecimal totalmoney = taskinfo.getPrice().multiply(new BigDecimal(taskinfo.getNum()));
 			taskinfo.setTotalmoney(totalmoney);
 			taskinfo.setStauts(1);
-			// 1 是否有未开始的任务在排队
+			// 获取结算方式
+			configMap.put("key","settletype");
+			configDos = configDao.list(configMap);
+			// 设置任务结算方式
+			taskinfo.setSettletype(Integer.parseInt(configDos.get(0).getValue()));
+
 			Map<String,Object> taskMap = Maps.newHashMap();
 			taskMap.put("stauts","1");
 			List<TaskinfoDO> taskinfoListdb = taskinfoDao.list(taskMap);
+			// 1 是否有未开始的任务在排队
 			taskinfoDao.save(taskinfo);
 			if(taskinfoListdb.size() != 0){ // 进入排队状态
 				taskinfo.setStauts(1);
 			}else {// 2 开始任务前，判断是否有足够的微信号, 冷却时间、当日上限数量、状态及绑定任务
-				Map<String,Object> configMap = Maps.newHashMap();
+
 				configMap.put("key","cdtime");
-				List<ConfigDO> configDos = configDao.list(configMap);
+				configDos = configDao.list(configMap);
 
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Date now = new Date();
