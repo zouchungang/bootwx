@@ -27,11 +27,9 @@ public interface Wxxy extends StdCallLibrary {
     /**获取授权**/
     int WXSetNetworkVerifyInfo(String ip, int port);
 
-    int WXInitialize(ByReference pVoid, String devname, String devtype, String uuid);
+    int WXInitialize(Pointer pVoid, String devname, String devtype, String uuid);
 
     int WXCheckQRCode(int obj, PointerByReference ret);
-
-    int WXGetQRCode(int obj, PointerByReference ret);
 
     /**获取二维码**/
     int  WXGetQRCode(int pVoid, PointerByReference ret);

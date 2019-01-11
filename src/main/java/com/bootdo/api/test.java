@@ -1,6 +1,7 @@
 package com.bootdo.api;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
@@ -37,7 +38,6 @@ public class test {
         byte[] obj1 = new byte[100];
         int objint=5;
         String wxuser=null;
-        IntByReference obj2 = new IntByReference();
         String uuid = UUID.randomUUID().toString();
         PointerByReference ret = new PointerByReference();
         PointerByReference ret1 = new PointerByReference();
@@ -48,13 +48,7 @@ public class test {
         PointerByReference ret6 = new PointerByReference();
 
         System.out.println("初始化授权→"+qdPos.WXSetNetworkVerifyInfo("120.79.185.75",18808));
-       //System.out.println(qdPos.WXQRCodeDecode(obj,ret));
-        //System.out.println("获取二维码→"+qdPos.WXGetQRCode(obj1,ret));
 
-        int a = qdPos.WXInitialize(obj1,"a","<softtype><k3>9.0.2</k3><k9>iPad</k9><k10>2</k10><k19>58BF17B5-2D8E-4BFB-A97E-38F1226F13F8</k19><k20>"+uuid+"</k20><k21>neihe_5GHz</k21><k22>(null)</k22><k24>34-97-F6-90-66-89</k24><k33>\\345\\276\\256\\344\\277\\241</k33><k47>1</k47><k50>1</k50><k51>com.tencent.xin</k51><k54>iPad4,4</k54></softtype>", uuid);
-        System.out.println("初始化设备→"+a);
-        System.out.println("获取二维码→"+qdPos.WXGetQRCode(a,ret));
-        System.out.println("获取二维码→"+ret.getValue().getString(0,"UTF-8"));
 
         Pointer pointer = new Memory(50000);
         int x=qdPos.WXInitialize(pointer,"a","<softtype><k3>9.0.2</k3><k9>iPad</k9><k10>2</k10><k19>58BF17B5-2D8E-4BFB-A97E-38F1226F13F8</k19><k20>"+uuid+"</k20><k21>neihe_5GHz</k21><k22>(null)</k22><k24>34-97-F6-90-66-89</k24><k33>\\345\\276\\256\\344\\277\\241</k33><k47>1</k47><k50>1</k50><k51>com.tencent.xin</k51><k54>iPad4,4</k54></softtype>",uuid);
@@ -101,6 +95,8 @@ public class test {
         }
         System.out.println("检查二维码状态：end 通过！");
 
+        qdPos.WXQRCodeLogin(x,jsonMap.get("user_name").toString(),jsonMap.get("password").toString(),ret);
+        System.out.println("登录>>WXQRCodeLogin>>"+ JSONObject.toJSON(ret));
 
         System.out.println("同步联系人："+qdPos.WXSyncContact(x,ret6));
         String tokenLicecseLink = ret6.getValue().getString(0, "UTF-8");
@@ -149,8 +145,6 @@ public class test {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }*/
-    }
-
     }
 
 }
