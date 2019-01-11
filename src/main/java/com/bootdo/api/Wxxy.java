@@ -24,13 +24,8 @@ public interface Wxxy extends StdCallLibrary {
     /**枚举串口设备*/
     WinDef.BOOL enumCOMPos(WString filter, WString[] deviceNames);
 
-    /**获取二维码**/
-  //  IntByReference  WXQRCodeDecode(String obj,String ret);
-
     /**获取授权**/
     int WXSetNetworkVerifyInfo(String ip, int port);
-    /**设备初始化**/
-    int WXInitialize(Pointer pVoid, String devname, String devtype, String uuid);
 
     int WXInitialize(ByReference pVoid, String devname, String devtype, String uuid);
 
@@ -39,7 +34,7 @@ public interface Wxxy extends StdCallLibrary {
     int WXGetQRCode(int obj, PointerByReference ret);
 
     /**获取二维码**/
-    IntByReference  WXGetQRCode(Pointer pVoid, PointerByReference ret);
+    int  WXGetQRCode(int pVoid, PointerByReference ret);
 
     /**
      * 获取登录token
@@ -86,6 +81,8 @@ public interface Wxxy extends StdCallLibrary {
     IntByReference  WXUserLogin(int pVoid,String user,String pwd,PointerByReference ret);
 
     IntByReference  WXGetQRCode(byte[] pVoid, PointerByReference ret);
+
+    int WXQRCodeLogin(int pVoid,String username,String password,PointerByReference ref);
 
 
 }
