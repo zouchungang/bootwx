@@ -3,18 +3,18 @@ package com.bootdo.system.controller;
 import com.bootdo.common.annotation.Log;
 import com.bootdo.common.config.Constant;
 import com.bootdo.common.controller.BaseController;
-import com.bootdo.common.domain.FileDO;
 import com.bootdo.common.domain.Tree;
 import com.bootdo.common.service.DictService;
-import com.bootdo.common.utils.*;
+import com.bootdo.common.utils.MD5Utils;
+import com.bootdo.common.utils.PageUtils;
+import com.bootdo.common.utils.Query;
+import com.bootdo.common.utils.R;
 import com.bootdo.system.domain.DeptDO;
 import com.bootdo.system.domain.RoleDO;
 import com.bootdo.system.domain.UserDO;
 import com.bootdo.system.service.RoleService;
 import com.bootdo.system.service.UserService;
 import com.bootdo.system.vo.UserVO;
-import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,28 +22,25 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.util.Date;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping("/sys/user")
+@RequestMapping("/sys/info")
 @Controller
-public class UserController extends BaseController {
-	private String prefix="system/user"  ;
+public class InfoController extends BaseController {
+	private String prefix="system/info"  ;
 	@Autowired
 	UserService userService;
 	@Autowired
 	RoleService roleService;
 	@Autowired
 	DictService dictService;
-	@RequiresPermissions("sys:user:user")
+	@RequiresPermissions("sys:info:info")
 	@GetMapping("")
-	String user(Model model) {
-		return prefix + "/user";
+	String info(Model model) {
+		return prefix + "/info";
 	}
 
 	@GetMapping("/list")
@@ -57,7 +54,7 @@ public class UserController extends BaseController {
 		return pageUtil;
 	}
 
-	@RequiresPermissions("sys:user:add")
+	@RequiresPermissions("sys:info:add")
 	@Log("添加用户")
 	@GetMapping("/add")
 	String add(Model model) {
@@ -66,7 +63,7 @@ public class UserController extends BaseController {
 		return prefix + "/add";
 	}
 
-	@RequiresPermissions("sys:user:edit")
+	@RequiresPermissions("sys:info:edit")
 	@Log("编辑用户")
 	@GetMapping("/edit/{id}")
 	String edit(Model model, @PathVariable("id") Long id) {
@@ -77,18 +74,7 @@ public class UserController extends BaseController {
 		return prefix+"/edit";
 	}
 
-	@RequiresPermissions("sys:user:get")
-	@Log("获取指定用户信息")
-	@GetMapping("/get")
-	String get(Model model, @PathVariable("id") Long id) {
-		UserDO userDO = userService.get(id);
-		model.addAttribute("user", userDO);
-		List<RoleDO> roles = roleService.list(id);
-		model.addAttribute("roles", roles);
-		return prefix+"/edit";
-	}
-
-	@RequiresPermissions("sys:user:add")
+	@RequiresPermissions("sys:info:add")
 	@Log("保存用户")
 	@PostMapping("/save")
 	@ResponseBody
@@ -111,7 +97,7 @@ public class UserController extends BaseController {
 		return userService.register(user);
 	}
 
-	@RequiresPermissions("sys:user:edit")
+	@RequiresPermissions("sys:info:edit")
 	@Log("更新用户")
 	@PostMapping("/update")
 	@ResponseBody
@@ -126,7 +112,7 @@ public class UserController extends BaseController {
 	}
 
 
-	@RequiresPermissions("sys:user:edit")
+	@RequiresPermissions("sys:info:edit")
 	@Log("更新用户")
 	@PostMapping("/updatePeronal")
 	@ResponseBody
@@ -141,7 +127,7 @@ public class UserController extends BaseController {
 	}
 
 
-	@RequiresPermissions("sys:user:remove")
+	@RequiresPermissions("sys:info:remove")
 	@Log("删除用户")
 	@PostMapping("/remove")
 	@ResponseBody
@@ -155,7 +141,7 @@ public class UserController extends BaseController {
 		return R.error();
 	}
 
-	@RequiresPermissions("sys:user:batchRemove")
+	@RequiresPermissions("sys:info:batchRemove")
 	@Log("批量删除用户")
 	@PostMapping("/batchRemove")
 	@ResponseBody
@@ -184,7 +170,7 @@ public class UserController extends BaseController {
 		return userService.exit(params);
 	}
 
-	@RequiresPermissions("sys:user:resetPwd")
+	@RequiresPermissions("sys:info:resetPwd")
 	@Log("请求更改用户密码")
 	@GetMapping("/resetPwd/{id}")
 	String resetPwd(@PathVariable("id") Long userId, Model model) {
@@ -210,7 +196,7 @@ public class UserController extends BaseController {
 		}
 
 	}
-	@RequiresPermissions("sys:user:resetPwd")
+	@RequiresPermissions("sys:info:resetPwd")
 	@Log("admin提交更改用户密码")
 	@PostMapping("/adminResetPwd")
 	@ResponseBody
