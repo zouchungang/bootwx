@@ -61,12 +61,50 @@ public interface Wxxy extends StdCallLibrary {
     IntByReference  WXGetContact(int pVoid,String user,PointerByReference ret);
 
     /**
+     * 获取朋友圈动态
+     * @param pVoid
+     * @param user
+     * @param ret
+     * @return
+     */
+    IntByReference  WXSnsTimeline(int pVoid,String user,PointerByReference ret);
+
+    /**
      * 获取标签列表
      * @param pVoid
      * @param ret
      * @return
      */
     IntByReference  WXGetContactLabelList(int pVoid,PointerByReference ret);
+
+    /**
+     * 发送App消息
+     * @param pVoid
+     * @param ret
+     * @return
+     */
+    IntByReference  WXSendAppMsg(int pVoid,String user,String content,PointerByReference ret);
+
+    /**
+     * 获取url访问token
+     * @param pVoid
+     * @param user
+     * @param url
+     * @param ret
+     * @return
+     */
+    IntByReference  WXGetRequestToken(int pVoid,String user,String url,PointerByReference ret);
+
+    /**
+     * 访问url
+     * @param pVoid
+     * @param url
+     * @param key
+     * @param uin
+     * @param ret
+     * @return
+     */
+    IntByReference  WXRequestUrl(int pVoid,String url,String key,String uin,PointerByReference ret);
 
     /**
      * 同步通讯录

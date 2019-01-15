@@ -1,6 +1,5 @@
 package com.bootdo.api;
 
-import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.sun.jna.Memory;
@@ -9,11 +8,11 @@ import com.sun.jna.ptr.ByReference;
 import com.sun.jna.ptr.PointerByReference;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.UUID;
 
-public class test {
+public class LoginThread {
 
     private static String base64front = "data:image/jpeg;base64,";
 
