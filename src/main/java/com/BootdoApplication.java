@@ -1,6 +1,6 @@
-/*
-package com.bootdo;
+package com;
 
+import com.wx.server;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -10,8 +10,10 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import java.io.IOException;
+
 @EnableAutoConfiguration(exclude = {
         org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class
 })
@@ -29,9 +31,11 @@ public class BootdoApplication extends SpringBootServletInitializer {
         return builder.sources(BootdoApplication.class);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         ac = SpringApplication.run(BootdoApplication.class, args);
-     //   SpringApplication.run(BootdoApplication.class, args);
+
+        server.main(args);
+
         System.out.println("ヾ(◍°∇°◍)ﾉﾞ    bootdo启动成功      ヾ(◍°∇°◍)ﾉﾞ\n" +
                 " ______                    _   ______            \n" +
                 "|_   _ \\                  / |_|_   _ `.          \n" +
@@ -41,4 +45,3 @@ public class BootdoApplication extends SpringBootServletInitializer {
                 "|_______/  '.__.'  '.__.' \\__/|______.'  '.__.'  ");
     }
 }
-*/
