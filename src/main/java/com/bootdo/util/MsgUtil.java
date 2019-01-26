@@ -1,6 +1,6 @@
 package com.bootdo.util;
 
-import com.bootdo.BootdoApplication;
+import com.BootdoApplication;
 import org.springframework.stereotype.Component;
 
 @Component
