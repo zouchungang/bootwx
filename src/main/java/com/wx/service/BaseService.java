@@ -3,6 +3,10 @@ package com.wx.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.bootdo.common.redis.shiro.RedisCache;
+import com.bootdo.common.redis.shiro.RedisCacheManager;
+import com.bootdo.common.redis.shiro.RedisManager;
+import com.bootdo.common.redis.shiro.SerializeUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -18,7 +22,6 @@ import com.wx.httpHandler.HttpResult;
 
 import static com.wx.httpHandler.HttpResult.getMd5;
 
-import com.wx.server;
 import com.wx.tools.*;
 
 import static com.wx.tools.ConfigService.getMac;
@@ -29,6 +32,7 @@ import org.apache.log4j.Logger;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class BaseService {
     private static Logger logger = Logger.getLogger(BaseService.class);
@@ -54,7 +58,18 @@ public abstract class BaseService {
     protected WXDBUser wxdbUser;
     protected UserSetting userSetting;
 
-    public BaseService(String randomids) {
+    private RedisManager redisManager;
+    private RedisCacheManager redisCacheManager;
+
+    public RedisCacheManager getRedisCacheManager() {
+        return redisCacheManager;
+    }
+
+    public void setRedisCacheManager(RedisCacheManager redisCacheManager) {
+        this.redisCacheManager = redisCacheManager;
+    }
+
+    public BaseService(String randomids) {//这里是每个微信号，不管逻辑是什么都要执行的一些函数，是必走的流程，所以放在基类里，等这些全部走完进入到心跳，待命的时候，就回到了刚才的父类里，去执行不同的逻辑
         this.randomid = randomids;
         longUtil = new WxLongUtil(this);
         createTime = System.currentTimeMillis();
@@ -158,10 +173,13 @@ public abstract class BaseService {
             try {
                 qrRes = new Gson().fromJson(new String(resData, "utf-8"), Response.class);
                 if (qrRes.Status == 0) {
+
+                    RedisUtils.set("qrcode",qrRes.ImgBuf);
+
                     curStatus.ImgBuf = qrRes.ImgBuf;
                     curStatus.code = qrRes.Status;
                     QrBuf = qrRes.ImgBuf;
-                    curStatus.msg = "二维码创建完成,请扫码!";
+                    curStatus.msg = "二维码创建完成,请扫码!";//你现在的问题是卡在哪里，你跑下我看看
                     if(ConfigService.test){
                         QrcodeWindows.getQrcode(curStatus.msg,qrRes.ImgBuf);
                     }
@@ -175,6 +193,7 @@ public abstract class BaseService {
     public HttpResult getState() {
         return curStatus;
     }
+
     public void checkQrCode(Response response) {
         longUtil.checkLogin(response, resData -> {
             try {
@@ -234,7 +253,7 @@ public abstract class BaseService {
         }
     }
 
-    public void login() {
+    public void login() {//这就是api调用，需要先到这个基类然后从基类调用接口，
         if (qrRes.hasSaoMa) {
             longUtil.login(qrRes, resData -> {
                 LoginResponse res = new Gson().fromJson(resData, LoginResponse.class);

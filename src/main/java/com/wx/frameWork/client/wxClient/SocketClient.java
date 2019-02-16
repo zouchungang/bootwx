@@ -87,6 +87,7 @@ public class SocketClient {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
