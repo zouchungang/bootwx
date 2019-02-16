@@ -37,12 +37,8 @@ public class GrpcPool {
         for (int j = 0; j < addNum; j++) {
             for (int i = 0; i < serverList.length; i++) {
                 GrpcClient client = null;
-                try {
                     client = new GrpcClient(serverList[i].split(":")[0], Integer.parseInt(serverList[i].split(":")[1]));
                     client.create();
-                } catch (SSLException e) {
-                    e.printStackTrace();
-                }
 
                 freeConnection.add(client);
                 totalClientNum++;
