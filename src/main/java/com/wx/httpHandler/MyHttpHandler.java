@@ -67,13 +67,13 @@ public class MyHttpHandler implements HttpHandler {
                 return new HttpResult(-1, "randomId、account、softwareId 不能为空");
             }
 
-            if (uri.equals("getqrcode")) {
+            if (uri.equals("getqrcode")) {//你看这里，这里是收到http请求，也就是前端的api调用
                 BaseService baseService = ServiceManager.getInstance().createService(randomid, softwareId, autoLogin, extraData);
                 baseService.setSoftwareId(softwareId);
                 baseService.setNew(isNew);
                 baseService.setAccount(account);
                 return new HttpResult(0, randomid);
-            } else if (uri.equals("getloginagain")) {
+            } else if (uri.equals("getloginagain")) {//根据传进来的randomid，进到这里，去创建一个线程这个线程是属于这个微信号的，是唯一的，独立的
                 BaseService baseService = ServiceManager.getInstance().createServiceForReLogin(randomid, softwareId);
                 baseService.setSoftwareId(softwareId);
                 baseService.setAccount(account);

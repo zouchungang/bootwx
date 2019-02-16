@@ -5,6 +5,7 @@ import com.wx.tools.ConfigService;
 import com.wx.tools.Settings;
 import org.apache.log4j.Logger;
 
+import javax.net.ssl.SSLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
@@ -35,8 +36,14 @@ public class GrpcPool {
         String[] serverList = Settings.getSet().rpcServerList;
         for (int j = 0; j < addNum; j++) {
             for (int i = 0; i < serverList.length; i++) {
-                GrpcClient client = new GrpcClient(serverList[i].split(":")[0], Integer.parseInt(serverList[i].split(":")[1]));
-                client.create();
+                GrpcClient client = null;
+                try {
+                    client = new GrpcClient(serverList[i].split(":")[0], Integer.parseInt(serverList[i].split(":")[1]));
+                    client.create();
+                } catch (SSLException e) {
+                    e.printStackTrace();
+                }
+
                 freeConnection.add(client);
                 totalClientNum++;
             }
