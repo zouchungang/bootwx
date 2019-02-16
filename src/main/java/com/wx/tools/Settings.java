@@ -12,6 +12,7 @@ public class Settings {
         public String machineCode = "v3_8799ed22a680b70e6dbe0596b1a82bdc";
         public String appId = "v1_804188876_CodeVip";
         public String appKey = "v2_1b76be021d21114b6d59bd7edd7c55dc";
+      //  public String appKey = "v3_8799ed22a680b70e6dbe0596b1a82bdc";
         public String localIp = "120.36.248.152";
         public String mysqlUrl = "jdbc:mysql://192.168.1.84/cyy_data?zeroDateTimeBehavior=convertToNull";
         public String mysqlUserName = "root";
