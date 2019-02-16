@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html  lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,8 +19,24 @@
             <li>用户发起佣金提现，提现金额将在3个工作日内到账,用户获得现金收益.</li>
         </ul>
     </div>
+    <div style="padding: 10px 0 20px 10px;">
+        <h3>&nbsp;&nbsp;&nbsp;WeChat Business Button</h3>
+        <ul>
+            <li><input type="button" id="getQrCode" name="getQrCode" onclick="getQrCode()" value="获取二维码"/> </li>
+            <li>平台使用用户绑定的微信号做任务，完成任务微信号获得佣金直接汇总到用户平台账户上.</li>
+            <li>用户发起佣金提现，提现金额将在3个工作日内到账,用户获得现金收益.</li>
+        </ul>
+    </div>
 </div>
 </body>
 <script src="js/jquery.min.js"></script>
 <script src="js/openTab.js"></script>
+<script th:inline="javascript"> var ctx = [[@{/}]] ; </script>
+<script type="text/javascript">
+    function getQrCode(){
+        $.post("http://localhost/wx/wxoperation/getQrCode?account=asd&softwareId=666&autoLogin=true&extraData=null&d="+new Date(),function (data) {
+            console.info(data);
+        });
+    }
+</script>
 </html>
