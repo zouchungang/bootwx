@@ -2,39 +2,56 @@ package com.wx.frameWork.client.grpcClient;
 
 import com.wx.frameWork.proto.WechatGrpc;
 import com.wx.tools.ConfigService;
-import com.wx.tools.Settings;
+import io.grpc.ManagedChannelBuilder;
+import io.netty.handler.ssl.*;
+import org.apache.log4j.Logger;
 import io.grpc.ManagedChannel;
 import io.grpc.Metadata;
 import io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.NettyChannelBuilder;
 import io.grpc.stub.MetadataUtils;
-import io.netty.handler.ssl.*;
-import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
-
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.SSLException;
 import java.io.File;
 
 public class GrpcClient {
+    static Logger logger = Logger.getLogger(GrpcClient.class);
     private String ip;
     private int port;
+    private File CerFile = null;
+    private boolean ssl = false;
     private WechatGrpc.WechatBlockingStub stub;
     private ManagedChannel channel;
-
-    public GrpcClient(String ip, int port) {
+    public GrpcClient(String ip, int port) throws SSLException {
         this.ip = ip;
         this.port = port;
+        create();
     }
 
-    public void create() {
-        try {
-            SslContextBuilder builder = GrpcSslContexts.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE);
-            SslContext sslContext = builder.build();
-            channel = NettyChannelBuilder.forAddress(ip, port)
+    public void create() throws SSLException {
+        create(ip,port,ssl);
+    }
+
+    public void create(File ChainFile ) throws SSLException {
+        if(CerFile!=null){
+            this.CerFile = ChainFile;
+            this.ssl = true;
+        }
+        create(ip,port,ssl);
+    }
+    public void create(String host ,int port,boolean Ssl)  throws SSLException {
+        ssl = Ssl;
+        SslContext sslContext;
+        if(Ssl){
+            logger.info("使用 SSL/TLS 创建链接！[安全]");
+            sslContext =  GrpcSslContexts.forClient().trustManager(CerFile).build();
+            channel= NettyChannelBuilder.forAddress(host, port)
                     .sslContext(sslContext)
                     .build();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else {
+            logger.info("不使用 SSL/TLS 创建链接！[不安全]");
+            channel = ManagedChannelBuilder.forAddress(host, port)
+                    .usePlaintext()
+                    .build();
         }
         Metadata data = new Metadata();
         data.put(Metadata.Key.of("appid", Metadata.ASCII_STRING_MARSHALLER), ConfigService.APPID);
@@ -42,21 +59,11 @@ public class GrpcClient {
         stub = WechatGrpc.newBlockingStub(channel);
         stub = MetadataUtils.attachHeaders(stub, data);
     }
-
     public void close() {
         if (channel != null) {
             channel.shutdownNow();
         }
     }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
     public int getPort() {
         return port;
     }
@@ -69,15 +76,4 @@ public class GrpcClient {
         return stub;
     }
 
-    public void setStub(WechatGrpc.WechatBlockingStub stub) {
-        this.stub = stub;
-    }
-
-    public ManagedChannel getChannel() {
-        return channel;
-    }
-
-    public void setChannel(ManagedChannel channel) {
-        this.channel = channel;
-    }
 }

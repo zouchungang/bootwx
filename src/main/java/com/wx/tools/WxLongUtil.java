@@ -93,7 +93,7 @@ public class WxLongUtil {
      *
      * @param back 登录成功后的回调
      */
-    public void login(Response qrRes, final WxLongUtilCallBack back) {
+    public void login(Response qrRes, final WxLongUtilCallBack back) {//从基类里调用接口类
         // TODO:设置登录信息
         HashMap<String, Object> loginData = new HashMap<String, Object>();
         loginData.put("Username", qrRes.Username);
