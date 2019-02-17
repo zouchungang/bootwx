@@ -181,7 +181,8 @@ public abstract class BaseService {
                     QrBuf = qrRes.ImgBuf;
                     curStatus.msg = "二维码创建完成,请扫码!";//你现在的问题是卡在哪里，你跑下我看看
                     if(ConfigService.test){
-                        QrcodeWindows.getQrcode(curStatus.msg,qrRes.ImgBuf);
+                        //javaSE窗口先注释
+//                        QrcodeWindows.getQrcode(curStatus.msg,qrRes.ImgBuf);
                     }
                     checkQrCode(qrRes);
                 }
@@ -209,7 +210,7 @@ public abstract class BaseService {
                         curStatus.bigHeadImgUrl = qrRes.HeadImgUrl;
                         curStatus.ImgBuf = "";
                         curStatus.msg = "已扫码,已确认,等待登陆";
-                        QrcodeWindows.overQrcode();
+//                        QrcodeWindows.overQrcode();
                         waitlogin();
                     } else if (qrRes.Status == 1) {
                         curStatus.code = 1;
@@ -219,7 +220,7 @@ public abstract class BaseService {
                         curStatus.ImgBuf = "";
                         curStatus.msg = "已扫码,未确认,请在手机上点击确认";
                     } else if (qrRes.Status == 4) {
-                        QrcodeWindows.overQrcode();
+//                        QrcodeWindows.overQrcode();
                         curStatus.code = -2;
                         curStatus.ImgBuf = "";
                         curStatus.msg = "扫描二维码超时,请重新获取二维码.";
