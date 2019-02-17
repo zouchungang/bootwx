@@ -20,7 +20,7 @@ public class ConfigService {
     public static int RedisDB;
     public static int RobotId;
     public static boolean foreText;
-    public static boolean test;
+    public static boolean test=false;
     private static long configLastModifyTime = 0;
     public static int server_port;
     public static String serverid;
