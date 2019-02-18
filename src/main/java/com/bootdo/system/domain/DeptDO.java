@@ -7,9 +7,9 @@ import java.io.Serializable;
 /**
  * 部门管理
  * 
- * @author chglee
- * @email 1992lcg@163.com
- * @date 2017-09-27 14:28:36
+ * @author zcg
+ *
+ * @date 2018-12-27 14:28:36
  */
 public class DeptDO implements Serializable {
 	private static final long serialVersionUID = 1L;

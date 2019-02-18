@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.baseinfo.dao.AccountDao">
+
+	<select id="get" resultType="com.bootdo.baseinfo.domain.AccountDO">
+		select `id`,`Uid`,`TotalGainMoney`,`TotalWithdrawMoney`,`ApplyWithdrawMoney`,`UseMoney`,`Createdate`,`Modifydate`,`version` from use_account where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.baseinfo.domain.AccountDO">
+		select `id`,`Uid`,`TotalGainMoney`,`TotalWithdrawMoney`,`ApplyWithdrawMoney`,`UseMoney`,`Createdate`,`Modifydate`,`version` from use_account
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="uid != null and uid != ''"> and Uid = #{uid} </if>
+		  		  <if test="totalgainmoney != null and totalgainmoney != ''"> and TotalGainMoney = #{totalgainmoney} </if>
+		  		  <if test="totalwithdrawmoney != null and totalwithdrawmoney != ''"> and TotalWithdrawMoney = #{totalwithdrawmoney} </if>
+		  		  <if test="applywithdrawmoney != null and applywithdrawmoney != ''"> and ApplyWithdrawMoney = #{applywithdrawmoney} </if>
+		  		  <if test="usemoney != null and usemoney != ''"> and UseMoney = #{usemoney} </if>
+		  		  <if test="createdate != null and createdate != ''"> and Createdate = #{createdate} </if>
+		  		  <if test="modifydate != null and modifydate != ''"> and Modifydate = #{modifydate} </if>
+				  <if test="version != null and version !=''"> and version = #{version} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from use_account
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="uid != null and uid != ''"> and Uid = #{uid} </if>
+		  		  <if test="totalgainmoney != null and totalgainmoney != ''"> and TotalGainMoney = #{totalgainmoney} </if>
+		  		  <if test="totalwithdrawmoney != null and totalwithdrawmoney != ''"> and TotalWithdrawMoney = #{totalwithdrawmoney} </if>
+		  		  <if test="applywithdrawmoney != null and applywithdrawmoney != ''"> and ApplyWithdrawMoney = #{applywithdrawmoney} </if>
+		  		  <if test="usemoney != null and usemoney != ''"> and UseMoney = #{usemoney} </if>
+		  		  <if test="createdate != null and createdate != ''"> and Createdate = #{createdate} </if>
+		  		  <if test="modifydate != null and modifydate != ''"> and Modifydate = #{modifydate} </if>
+			 	  <if test="version != null and version != ''"> and version = #{version} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.baseinfo.domain.AccountDO" useGeneratedKeys="true" keyProperty="id">
+		insert into use_account
+		(
+			`Uid`, 
+			`TotalGainMoney`, 
+			`TotalWithdrawMoney`, 
+			`ApplyWithdrawMoney`, 
+			`UseMoney`, 
+			`Createdate`, 
+			`Modifydate`
+		)
+		values
+		(
+			#{uid}, 
+			#{totalgainmoney}, 
+			#{totalwithdrawmoney}, 
+			#{applywithdrawmoney}, 
+			#{usemoney}, 
+			#{createdate}, 
+			#{modifydate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.baseinfo.domain.AccountDO">
+		update use_account 
+		<set>
+			<if test="uid != null">`Uid` = #{uid}, </if>
+			<if test="totalgainmoney != null">`TotalGainMoney` = #{totalgainmoney}, </if>
+			<if test="totalwithdrawmoney != null">`TotalWithdrawMoney` = #{totalwithdrawmoney}, </if>
+			<if test="applywithdrawmoney != null">`ApplyWithdrawMoney` = #{applywithdrawmoney}, </if>
+			<if test="usemoney != null">`UseMoney` = #{usemoney}, </if>
+			<if test="createdate != null">`Createdate` = #{createdate}, </if>
+			<if test="modifydate != null">`Modifydate` = #{modifydate}, </if>
+			<if test="version != null">`version` = #{version}+1</if>
+		</set>
+		where id = #{id} and version = #{version}
+	</update>
+	
+	<delete id="remove">
+		delete from use_account where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from use_account where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<select id="getByUid" resultType="com.bootdo.baseinfo.domain.AccountDO">
+		select `id`,`Uid`,`TotalGainMoney`,`TotalWithdrawMoney`,`ApplyWithdrawMoney`,`UseMoney`,`Createdate`,`Modifydate`,`version` from use_account where Uid = #{value}
+	</select>
+
+	<update id="updateSettleAccount" parameterType="map">
+		update use_account set TotalGainMoney = TotalGainMoney + #{changeValue}, UseMoney = UseMoney + #{changeValue}
+		where id = #{id} and version = #{version}
+	</update>
+</mapper>

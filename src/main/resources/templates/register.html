@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>BootWx</title>
+    <meta name="keywords" content="BootWx管理系统">
+    <meta name="description" content="BootWx管理系统">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="/css/animate.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/login.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/plugins/iCheck/custom.css">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html"/>
+    <![endif]-->
+    <script>
+        if (window.top !== window.self) {
+            window.top.location = window.location;
+        }
+    </script>
+</head>
+
+<body class="signin">
+<div class="middle-box text-center loginscreen   animated fadeInDown">
+    <div>
+        <div>
+
+            <h1 class="logo-name" style="font-size: 92px; color: #4d3939;">BootWx</h1>
+
+        </div>
+        <h3>欢迎注册</h3>
+        <p>创建一个新账户</p>
+        <form id="registerForm">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="请输入用户名" id="username" name="username"style="color: #333333;">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码" style="color: #333333;">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" id="repassword" name="repassword" placeholder="请再次输入密码" style="color: #333333;">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="invitecode" name="invitecode" placeholder="请输入邀请码" style="color: #333333;">
+            </div>
+            <button type="button" id="register" class="btn btn-primary block full-width m-b">注 册</button>
+
+            <p class="text-muted text-center"><small>已经有账户了？</small><a href="login.html">点此登录</a>
+            </p>
+
+        </form>
+    </div>
+</div>
+<script th:inline="javascript"> var ctx = [[@{/}]] ; </script>
+<!-- 全局js -->
+<script src="/js/jquery.min.js?v=2.1.4" th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
+<script src="/js/bootstrap.min.js?v=3.3.6" th:src="@{/js/bootstrap.min.js?v=3.3.6}"></script>
+
+<!-- 自定义js -->
+<script src="/js/content.js?v=1.0.0" th:src="@{/js/content.js?v=1.0.0}"></script>
+
+<!-- jQuery Validation plugin javascript-->
+<script src="/js/ajax-util.js"></script>
+<script src="/js/plugins/validate/jquery.validate.min.js" th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+<script src="/js/plugins/validate/messages_zh.min.js" th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<script src="/js/plugins/layer/layer.min.js" th:src="@{/js/plugins/layer/layer.min.js}"></script>
+<script src="/js/plugins/iCheck/icheck.min.js" th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#register").on('click',function(){$("#registerForm").submit();});
+        validateRule();
+        $("body").keydown(keyDownLogon);
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+    });
+
+    $.validator.setDefaults({
+        submitHandler: function () {
+            register();
+        }
+    });
+
+    function register() {
+        $.ajax({
+            type: "POST",
+            url: ctx+"sys/user/register",
+            data: $('#registerForm').serialize(),
+            success: function (r) {
+                 if (r.code == 0) {
+                    var index = layer.load(1, {
+                        shade: [0.1,'#fff'] //0.1透明度的白色背景
+                    });
+                    parent.location.href = '/index';
+                } else {
+                    layer.msg(r.msg);
+                }
+            },
+        });
+    }
+
+    function keyDownLogon(){
+        if (event.keyCode == "13") {
+            $("#register").trigger('click');
+        }
+    }
+
+    function validateRule() {
+        var icon = "<i class='fa fa-times-circle'></i> ";
+        $("#registerForm").validate({
+            rules: {
+                username: {
+                    required: true,
+                    rangelength:[6,18],
+                    remote : {
+                        url : "/sys/user/exit", // 后台处理程序
+                        type : "post", // 数据发送方式
+                        dataType : "json", // 接受数据格式
+                        data : { // 要传递的数据
+                            username : function() {
+                                return $("#username").val();
+                            }
+                        }
+                    }
+                },
+                password: {
+                    required: true,
+                    minlength:2
+                },
+                repassword:{
+                    required: true,
+                    equalTo: "#password"
+                },
+                invitecode:{
+                    remote : {
+                        url : "/sys/user/exitInvitecode", // 后台处理程序
+                        type : "post", // 数据发送方式
+                        dataType : "json", // 接受数据格式
+                        data : { // 要传递的数据
+                            invitecode : function() {
+                                return $("#invitecode").val();
+                            }
+                        }
+                    }
+                }
+            },
+            messages: {
+                username: {
+                    required: icon + "请输入您的用户名",
+                    rangelength: icon + "请输入2位以上长度的用户名",
+                    remote : icon + "用户名已经存在"
+                },
+                password: {
+                    required: icon + "请输入您的密码",
+                    rangelength: icon + "请输入6-18位长度的密码",
+                },
+                repassword:{
+                    required: icon + "请再次输入您的密码",
+                    equalTo: icon + "两次输入的密码不一致"
+                },
+                invitecode:{
+                    remote : icon + "邀请码不存在"
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>
