@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html  lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,32 +10,75 @@
 </head>
 <body>
 <div class="panel panel-default">
-    <div class="panel-heading">了解BootDo</div>
+    <div class="panel-heading">了解BOOTWx平台</div>
     <div style="padding: 10px 0 20px 10px;">
         <h3>&nbsp;&nbsp;&nbsp;项目介绍</h3>
         <ul>
-            <li>面向学习型的开源框架，简洁高效，减少过渡封装，展现技术本质</li>
-            <li>Springboot作为基础框架，使用mybatis作为持久层框架</li>
-            <li>使用官方推荐的thymeleaf做为模板引擎，shiro作为安全框架,主流技术，“一网打尽”</li>
-            <li>极简配置，一键前后台代码生成</li>
-        </ul>
+  <!--          <li>用户注册平台账户后，通过扫描二维码或导入数据的方式将微信号绑定到自己账户下面.</li>
+            <li>平台使用用户绑定的微信号做任务，完成任务微信号获得佣金直接汇总到用户平台账户上.</li>
+            <li>用户发起佣金提现，提现金额将在3个工作日内到账,用户获得现金收益.</li>-->
 
-        <h3>&nbsp;&nbsp;&nbsp;获取源码</h3>
+            <!--<button type="button"-->
+                    <!--class="btn  btn-primary" onclick="getQRCode()">-->
+                <!--<i class="fa fa-plus" aria-hidden="true"></i>获取二维码-->
+            <!--</button>-->
+            <input type="hidden" id="randomId" name="randomId"></input>
+            <div id="qrcodeUUID"></div>
+            <img id="qrImg" src="" width="150px" height="150px" alt="微信登录二维码" />
+
+
+        </ul>
+    </div>
+    <div style="padding: 10px 0 20px 10px;">
+        <h3>&nbsp;&nbsp;&nbsp;WeChat Business Button</h3>
         <ul>
-            <li>Github地址：<a href="https://github.com/lcg0124/bootdo.git" th:href="@{https://github.com/lcg0124/bootdo.git}" target="_blank">https://github.com/lcg0124/bootdo.git</a></li>
-            <li>Oschina地址：<a href="https://gitee.com/lcg0124/bootdo.git" target="_blank">https://gitee.com/lcg0124/bootdo.git</a></li>
+            <li><input type="button" id="getQrCode" name="getQrCode" onclick="getQrCode()" value="获取二维码"/> </li>
+            <li><input type="button" id="getQrCodeStatus" name="getQrCode" onclick="getQrCodeStatus()" value="获取二维码状态"/> </li>
+            <li><input type="button" id="getLoginStatus" name="getLoginStatus" onclick="getLoginStatus()" value="获取登录状态"/> </li>
+            <li>平台使用用户绑定的微信号做任务，完成任务微信号获得佣金直接汇总到用户平台账户上.</li>
+            <li>用户发起佣金提现，提现金额将在3个工作日内到账,用户获得现金收益.</li>
         </ul>
-
-        <h3>&nbsp;&nbsp;&nbsp;官方QQ群</h3>
-        <ul>
-            <li>点击链接加入群【BootDo交流群】：<a href="https://jq.qq.com/?_wv=1027&k=5EYXfiZ">669039323(满)</a></li>
-            <li>点击链接加入群聊【BootDo交流二群】：<a href="https://jq.qq.com/?_wv=1027&k=5M659N4">614726589</a></li>
-        </ul>
-
-       <button class="btn" onclick="openPage('http://bootdo.com','bootdo.com')">访问bootdo官网(新打开tab页事例)</button>
     </div>
 </div>
 </body>
 <script src="js/jquery.min.js"></script>
 <script src="js/openTab.js"></script>
+<script th:inline="javascript"> var ctx = [[@{/}]] ; </script>
+<script type="text/javascript">
+    var ind = "";
+    function getQrCode(){
+        $.post("http://localhost/wx/wxoperation/login_qrcode?account=asd&softwareId=666&autoLogin=true&extraData=null&d="+new Date(),function (data) {
+            console.info(data);
+            if (data != null) {
+                $("#qrcodeUUID").html(data.uuid);
+                $("#randomId").val(data.uuid);
+
+                ind=setInterval(getQrCodeStatus, 1000);
+
+            }
+        });
+    }
+
+    function getQrCodeStatus(){
+        $.post("http://localhost/wx/wxoperation/login_status?account=asd&softwareId=666&autoLogin=true&extraData=null&randomId="+$("#randomId").val(),function (data) {
+            if (data != null&&data.code==0) {
+                var qrImg=data.status.state.ImgBuf;
+                console.info(qrImg);
+                if (qrImg != null&&qrImg!='') {
+                    qrImg = 'data:image/png;base64,' + qrImg;
+                    $("#qrImg").attr('src',qrImg);
+                    clearInterval(ind);
+                }
+            }
+        });
+    }
+
+    function getLoginStatus(){
+        $.post("http://localhost/wx/wxoperation/getLoginStatus?randomId="+$("#randomId").val(),function (data) {
+            if (data != null&&data.code==0) {
+                console.info(data);
+            }
+        });
+    }
+</script>
 </html>

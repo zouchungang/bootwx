@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.baseinfo.dao.WechatDao">
+
+	<select id="get" resultType="com.bootdo.baseinfo.domain.WechatDO">
+		select `id`,`uid`,`Wechat`,`Password`,`Data62`,`LastDate`,`TotalTaskQuantity`,`TodayTaskQuantity`,`Stauts`,`Remark`,`Createdate`,`Modifydate`,`Taskid` from use_wechat where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.baseinfo.domain.WechatDO">
+		select `id`,`uid`,`Wechat`,`Password`,`Data62`,`LastDate`,`TotalTaskQuantity`,`TodayTaskQuantity`,`Stauts`,`Remark`,`Createdate`,`Modifydate`,`Taskid` from use_wechat
+        <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="uid != null and uid != ''"> and uid = #{uid} </if>
+		  		  <if test="wechat != null and wechat != ''"> and Wechat = #{wechat} </if>
+		  		  <if test="password != null and password != ''"> and Password = #{password} </if>
+		  		  <if test="data62 != null and data62 != ''"> and Data62 = #{data62} </if>
+		  		  <if test="lastdate != null and lastdate != ''"> and LastDate = #{lastdate} </if>
+		  		  <if test="totaltaskquantity != null and totaltaskquantity != ''"> and TotalTaskQuantity = #{totaltaskquantity} </if>
+		  		  <if test="todaytaskquantity != null and todaytaskquantity != ''"> and TodayTaskQuantity = #{todaytaskquantity} </if>
+		  		  <if test="stauts != null and stauts != ''"> and Stauts = #{stauts} </if>
+		  		  <if test="remark != null and remark != ''"> and Remark = #{remark} </if>
+		  		  <if test="createdate != null and createdate != ''"> and Createdate = #{createdate} </if>
+		  		  <if test="modifydate != null and modifydate != ''"> and Modifydate = #{modifydate} </if>
+		  		  <if test="taskid != null and taskid != ''"> and Taskid = #{taskid} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from use_wechat
+		 <where>  
+		  		  <if test="id != null and id != ''"> and id = #{id} </if>
+		  		  <if test="uid != null and uid != ''"> and uid = #{uid} </if>
+		  		  <if test="wechat != null and wechat != ''"> and Wechat = #{wechat} </if>
+		  		  <if test="password != null and password != ''"> and Password = #{password} </if>
+		  		  <if test="data62 != null and data62 != ''"> and Data62 = #{data62} </if>
+		  		  <if test="lastdate != null and lastdate != ''"> and LastDate = #{lastdate} </if>
+		  		  <if test="totaltaskquantity != null and totaltaskquantity != ''"> and TotalTaskQuantity = #{totaltaskquantity} </if>
+		  		  <if test="todaytaskquantity != null and todaytaskquantity != ''"> and TodayTaskQuantity = #{todaytaskquantity} </if>
+		  		  <if test="stauts != null and stauts != ''"> and Stauts = #{stauts} </if>
+		  		  <if test="remark != null and remark != ''"> and Remark = #{remark} </if>
+		  		  <if test="createdate != null and createdate != ''"> and Createdate = #{createdate} </if>
+		  		  <if test="modifydate != null and modifydate != ''"> and Modifydate = #{modifydate} </if>
+		  		  <if test="taskid != null and taskid != ''"> and Taskid = #{taskid} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.baseinfo.domain.WechatDO" useGeneratedKeys="true" keyProperty="id">
+		insert into use_wechat
+		(
+			`uid`, 
+			`Wechat`, 
+			`Password`, 
+			`Data62`, 
+			`LastDate`, 
+			`TotalTaskQuantity`, 
+			`TodayTaskQuantity`, 
+			`Stauts`, 
+			`Remark`, 
+			`Createdate`, 
+			`Modifydate`, 
+			`Taskid`
+		)
+		values
+		(
+			#{uid}, 
+			#{wechat}, 
+			#{password}, 
+			#{data62}, 
+			#{lastdate}, 
+			#{totaltaskquantity}, 
+			#{todaytaskquantity}, 
+			#{stauts}, 
+			#{remark}, 
+			#{createdate}, 
+			#{modifydate}, 
+			#{taskid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.baseinfo.domain.WechatDO">
+		update use_wechat 
+		<set>
+			<if test="uid != null">`uid` = #{uid}, </if>
+			<if test="wechat != null">`Wechat` = #{wechat}, </if>
+			<if test="password != null">`Password` = #{password}, </if>
+			<if test="data62 != null">`Data62` = #{data62}, </if>
+			<if test="lastdate != null">`LastDate` = #{lastdate}, </if>
+			<if test="totaltaskquantity != null">`TotalTaskQuantity` = #{totaltaskquantity}, </if>
+			<if test="todaytaskquantity != null">`TodayTaskQuantity` = #{todaytaskquantity}, </if>
+			<if test="stauts != null">`Stauts` = #{stauts}, </if>
+			<if test="remark != null">`Remark` = #{remark}, </if>
+			<if test="createdate != null">`Createdate` = #{createdate}, </if>
+			<if test="modifydate != null">`Modifydate` = #{modifydate}, </if>
+			<if test="taskid != null">`Taskid` = #{taskid}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="remove">
+		delete from use_wechat where id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from use_wechat where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<!--可以做任务的号-->
+	<select id="taskwxlist" resultType="com.bootdo.baseinfo.domain.WechatDO">
+		select `id`,`uid`,`Wechat`,`Password`,`Data62`,`LastDate`,`TotalTaskQuantity`,`TodayTaskQuantity`,`Stauts`,`Remark`,`Createdate`,`Modifydate`,`Taskid`
+		from use_wechat where Taskid is null and Stauts=1
+			<if test="lastdate != null and lastdate != ''"> and LastDate <![CDATA[ < ]]>  #{lastdate} </if>
+			<if test="todaytaskquantity != null and todaytaskquantity != ''"> and TodayTaskQuantity <![CDATA[ < ]]> #{todaytaskquantity} </if>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+</mapper>

@@ -11,6 +11,8 @@ import com.bootdo.common.utils.R;
 import com.bootdo.common.utils.ShiroUtils;
 import com.bootdo.system.domain.MenuDO;
 import com.bootdo.system.service.MenuService;
+import com.wx.service.BaseService;
+import com.wx.service.ServiceManager;
 import io.swagger.models.auth.In;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class LoginController extends BaseController {
@@ -37,6 +40,7 @@ public class LoginController extends BaseController {
     FileService fileService;
     @Autowired
     BootdoConfig bootdoConfig;
+
 
     @GetMapping({"/", ""})
     String welcome(Model model) {
@@ -69,6 +73,11 @@ public class LoginController extends BaseController {
         model.addAttribute("username", bootdoConfig.getUsername());
         model.addAttribute("password", bootdoConfig.getPassword());
         return "login";
+    }
+
+    @GetMapping("/register")
+    String register(Model model) {
+        return "register";
     }
 
     @Log("登录")

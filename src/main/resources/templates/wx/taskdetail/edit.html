@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content">
+						<form class="form-horizontal m-t" id="signupForm">
+						<input id="id" name="id" th:value="${taskdetail.id}"  type="hidden">
+							<div class="form-group">	
+								<label class="col-sm-3 control-label">任务id：</label>
+								<div class="col-sm-8">
+									<input id="taskid" name="taskid" th:value="${taskdetail.taskid}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">用户id：</label>
+								<div class="col-sm-8">
+									<input id="uid" name="uid" th:value="${taskdetail.uid}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">父级用户id(邀请人id)：</label>
+								<div class="col-sm-8">
+									<input id="parentid" name="parentid" th:value="${taskdetail.parentid}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">微信id：</label>
+								<div class="col-sm-8">
+									<input id="wxid" name="wxid" th:value="${taskdetail.wxid}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">任务单价：</label>
+								<div class="col-sm-8">
+									<input id="price" name="price" th:value="${taskdetail.price}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">任务类型,1.阅读，2.点赞，3.关注：</label>
+								<div class="col-sm-8">
+									<input id="tasktype" name="tasktype" th:value="${taskdetail.tasktype}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">状态 1.成功,2.失败：</label>
+								<div class="col-sm-8">
+									<input id="stauts" name="stauts" th:value="${taskdetail.stauts}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">失败备注：</label>
+								<div class="col-sm-8">
+									<input id="remark" name="remark" th:value="${taskdetail.remark}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">创建时间：</label>
+								<div class="col-sm-8">
+									<input id="createdate" name="createdate" th:value="${taskdetail.createdate}" class="form-control" type="text">
+								</div>
+							</div>
+														<div class="form-group">	
+								<label class="col-sm-3 control-label">修改时间：</label>
+								<div class="col-sm-8">
+									<input id="modifydate" name="modifydate" th:value="${taskdetail.modifydate}" class="form-control" type="text">
+								</div>
+							</div>
+																					<div class="form-group">
+								<div class="col-sm-8 col-sm-offset-3">
+									<button type="submit" class="btn btn-primary">提交</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script type="text/javascript" src="/js/appjs/wx/taskdetail/edit.js">
+	</script>
+</body>
+</html>

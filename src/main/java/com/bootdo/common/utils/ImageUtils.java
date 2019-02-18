@@ -15,7 +15,7 @@ import java.util.Iterator;
 
 /**
  * @author gaoyuzhe
- * @date 2017/12/18.
+ * @date 2018-12-25 11:20:30/12/18.
  */
 public class ImageUtils {
     /***

@@ -35,6 +35,7 @@
             <if test="hobby != null and hobby != ''">and hobby = #{hobby}</if>
             <if test="province != null and province != ''">and province = #{province}</if>
             <if test="city != null and city != ''">and city = #{city}</if>
+            <if test="invitecode != null and invitecode != ''">and invitecode = #{invitecode}</if>
             <if test="district != null and district != ''">and district = #{district}</if>
         </where>
         <choose>
@@ -94,7 +95,9 @@
 			`live_address`, 
 			`hobby`, 
 			`province`, 
-			`city`, 
+			`city`,
+			`invitecode`,
+			`parentid`,
 			`district`
 		)
 		values
@@ -115,7 +118,9 @@
 			#{liveAddress}, 
 			#{hobby}, 
 			#{province}, 
-			#{city}, 
+			#{city},
+            #{invitecode},
+            #{parentid},
 			#{district}
 		)
 	</insert>
